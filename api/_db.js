@@ -1,5 +1,2 @@
-import { createClient } from '@supabase/supabase-js'
-
-export const supabase = process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_KEY
-  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY)
-  : null
+// Supabase caching removed — see branch with-supabase
+export const supabase = null

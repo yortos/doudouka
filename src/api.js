@@ -129,7 +129,15 @@ export async function fetchNBAStandings() {
 
 export async function fetchTennisScoreboard(leagueId = 'atp', date = new Date()) {
   const data = await apiFetch(`/api/scoreboard?sport=tennis&league=${leagueId}&date=${formatDate(date)}`)
-  return hydrateDates(data)
+  const matches = hydrateDates(data)
+  // Filter client-side using local time — the server filters by UTC date but late US timezone
+  // matches (e.g. 8 PM PDT = 3 AM UTC next day) can slip through with the wrong UTC date.
+  const localDateStr = formatDate(date)
+  return matches.filter(m => {
+    if (!m.date) return true
+    if (m.statusState === 'in') return true
+    return formatDate(m.date) === localDateStr
+  })
 }
 
 export async function fetchTennisRankings(leagueId = 'atp') {

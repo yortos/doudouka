@@ -331,6 +331,32 @@ export default function App() {
         onChange={id => { setActiveLeague(id); setActiveView('matches') }}
       />
 
+      {/* No Spoilers card */}
+      <div
+        className={`ns-card ${noSpoilers ? 'on' : ''}`}
+        onClick={() => {
+          const next = !noSpoilers
+          setNoSpoilers(next)
+          localStorage.setItem('noSpoilers', next ? '1' : '0')
+        }}
+        role="switch"
+        aria-checked={noSpoilers}
+        tabIndex={0}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); const next = !noSpoilers; setNoSpoilers(next); localStorage.setItem('noSpoilers', next ? '1' : '0') } }}
+      >
+        <div className="ns-card-text">
+          <span className={`ns-card-title ${noSpoilers ? 'on' : 'off'}`}>
+            {noSpoilers ? 'Spoilers Off — Scores Hidden' : 'Spoiler Alert — Scores Showing'}
+          </span>
+          <span className="ns-card-subtitle">
+            {noSpoilers ? 'Tap to reveal scores and results' : 'Tap to hide scores and results'}
+          </span>
+        </div>
+        <div className={`ns-toggle-track ${noSpoilers ? 'on' : ''}`}>
+          <div className="ns-toggle-thumb" />
+        </div>
+      </div>
+
       <div className="main-content">
         {/* View toggle (only soccer supports standings + team views) */}
         <div style={{ display: ['team', 'f1-driver', 'f1-constructor'].includes(activeView) ? 'none' : 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
@@ -359,19 +385,6 @@ export default function App() {
                 </button>
               )}
             </div>
-
-            <button
-              className={`no-spoilers-btn ${noSpoilers ? 'active' : ''}`}
-              onClick={() => {
-                const next = !noSpoilers
-                setNoSpoilers(next)
-                localStorage.setItem('noSpoilers', next ? '1' : '0')
-              }}
-              title={noSpoilers ? 'No Spoilers is ON — click to disable' : 'Enable No Spoilers mode'}
-            >
-              <span className="ns-dot" />
-              {noSpoilers ? 'Spoilers Hidden' : 'No Spoilers'}
-            </button>
           </div>
 
           {activeView === 'matches' && sportDef?.hasDateNav && (

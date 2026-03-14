@@ -1606,48 +1606,89 @@ body {
   align-self: start;
 }
 
-/* ─── No Spoilers ───────────────────────────────────────────────────────────── */
-.no-spoilers-btn {
-  display: inline-flex;
+/* ─── No Spoilers Card ───────────────────────────────────────────────────────── */
+.ns-card {
+  display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 13px;
-  border-radius: 20px;
-  border: 1.5px solid var(--border-active);
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 600;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  max-width: 960px;
+  width: calc(100% - 32px);
+  margin: 0 auto 4px;
+  border-radius: 14px;
+  /* OFF state — amber */
+  border: 1.5px solid #b8841c;
+  background: rgba(235, 173, 37, 0.08);
   cursor: pointer;
-  transition: all var(--transition);
-  white-space: nowrap;
-  letter-spacing: 0.02em;
-  align-self: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.25s ease, background 0.25s ease;
 }
 
-.no-spoilers-btn:hover {
-  border-color: var(--text-secondary);
-  color: var(--text-secondary);
+.ns-card.on {
+  /* ON state — blue */
+  border-color: #1e40af;
+  background: rgba(37, 99, 235, 0.09);
 }
 
-.no-spoilers-btn.active {
-  background: rgba(237, 201, 81, 0.1);
-  border-color: var(--gold);
-  color: var(--gold);
+.ns-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.ns-dot {
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0.5;
+.ns-card-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.ns-card-title.off {
+  color: #EBAD25;
+}
+
+.ns-card-title.on {
+  color: #60a5fa;
+}
+
+.ns-card-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Track */
+.ns-toggle-track {
+  width: 53px;
+  height: 31px;
+  border-radius: 999px;
+  /* OFF — amber */
+  background: #EBAD25;
+  position: relative;
+  transition: background 0.25s ease;
   flex-shrink: 0;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.25);
 }
 
-.no-spoilers-btn.active .ns-dot {
-  opacity: 1;
+.ns-toggle-track.on {
+  /* ON — blue */
+  background: #2563eb;
+}
+
+/* Thumb */
+.ns-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.22s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+}
+
+.ns-toggle-track.on .ns-toggle-thumb {
+  transform: translateX(22px);
 }
 
 /* Spoiler blur for inline score numbers */

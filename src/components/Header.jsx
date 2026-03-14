@@ -1,4 +1,4 @@
-export default function Header() {
+export default function Header({ action }) {
   const now = new Date()
   const label = now.toLocaleDateString('en-US', {
     weekday: 'long',
@@ -15,6 +15,7 @@ export default function Header() {
           Matchboard
         </div>
         <div className="header-date">{label}</div>
+        {action && <div className="header-action">{action}</div>}
       </div>
     </header>
   )

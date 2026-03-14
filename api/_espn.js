@@ -39,8 +39,15 @@ function parseTeam(competitor, score) {
   }
 }
 
-function parseEvents(events, leagueId, sport = 'soccer') {
-  return events.map(event => {
+function parseEvents(events, leagueId, sport = 'soccer', filterDate = null) {
+  const filterDateStr = filterDate ? formatDate(filterDate) : null
+  return events.filter(event => {
+    if (!filterDateStr) return true
+    const status = event.status?.type || event.competitions?.[0]?.status?.type || {}
+    if (status.state === 'in') return true  // always include live matches
+    const eventDate = (event.date || '').slice(0, 10).replace(/-/g, '')
+    return eventDate === filterDateStr
+  }).map(event => {
     const comp = event.competitions?.[0] || {}
     const competitors = comp.competitors || []
     const home = competitors.find(c => c.homeAway === 'home') || competitors[0] || {}
@@ -90,7 +97,7 @@ export async function fetchSoccerScoreboard(leagueId, date) {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Soccer scoreboard failed: HTTP ${res.status}`)
   const data = await res.json()
-  return parseEvents(data.events || [], leagueId, 'soccer')
+  return parseEvents(data.events || [], leagueId, 'soccer', date)
 }
 
 export async function fetchSoccerStandings(leagueId) {
@@ -210,7 +217,7 @@ export async function fetchNBAScoreboard(date) {
   const res = await fetch(url)
   if (!res.ok) throw new Error(`NBA scoreboard failed: HTTP ${res.status}`)
   const data = await res.json()
-  return parseEvents(data.events || [], 'nba', 'basketball')
+  return parseEvents(data.events || [], 'nba', 'basketball', date)
 }
 
 export async function fetchNBAStandings() {

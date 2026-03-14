@@ -72,6 +72,7 @@ export default function App() {
   const [tennisRankingsCache, setTennisRankingsCache] = useState({})
   const [loadingTennisRankings, setLoadingTennisRankings] = useState(false)
   const [tennisRankingsError, setTennisRankingsError] = useState(null)
+  const [activeTennisRankingsTab, setActiveTennisRankingsTab] = useState('atp')
 
   const [date, setDate] = useState(new Date())
 
@@ -226,6 +227,13 @@ export default function App() {
     try {
       let data
       if (sport === 'basketball') data = await fetchNBAScoreboard(forDate)
+      else if (sport === 'tennis' && leagueId === 'combined') {
+        const [atp, wta] = await Promise.all([
+          fetchTennisScoreboard('atp', forDate),
+          fetchTennisScoreboard('wta', forDate),
+        ])
+        data = [...atp, ...wta].sort((a, b) => (a.date || 0) - (b.date || 0))
+      }
       else if (sport === 'tennis') data = await fetchTennisScoreboard(leagueId, forDate)
       else if (sport === 'f1') data = await fetchF1Scoreboard()
       setOtherCache(prev => ({ ...prev, [key]: data || [] }))
@@ -258,9 +266,9 @@ export default function App() {
       loadNBAStandings()
     }
     if (activeView === 'standings' && activeSport === 'tennis') {
-      loadTennisRankings(activeLeague)
+      loadTennisRankings(activeTennisRankingsTab)
     }
-  }, [activeView, activeLeague, activeSport]) // eslint-disable-line
+  }, [activeView, activeLeague, activeSport, activeTennisRankingsTab]) // eslint-disable-line
 
   // Auto-refresh every 60s for today's matches
   useEffect(() => {
@@ -591,11 +599,27 @@ export default function App() {
 
         {/* ── Tennis Rankings View ── */}
         {activeView === 'standings' && activeSport === 'tennis' && (
-          <TennisRankings
-            entries={tennisRankingsCache[activeLeague]}
-            loading={loadingTennisRankings && !tennisRankingsCache[activeLeague]}
-            error={tennisRankingsError}
-          />
+          <>
+            <div className="view-toggle" style={{ marginBottom: 12 }}>
+              <button
+                className={`view-toggle-btn ${activeTennisRankingsTab === 'atp' ? 'active' : ''}`}
+                onClick={() => setActiveTennisRankingsTab('atp')}
+              >
+                ATP
+              </button>
+              <button
+                className={`view-toggle-btn ${activeTennisRankingsTab === 'wta' ? 'active' : ''}`}
+                onClick={() => setActiveTennisRankingsTab('wta')}
+              >
+                WTA
+              </button>
+            </div>
+            <TennisRankings
+              entries={tennisRankingsCache[activeTennisRankingsTab]}
+              loading={loadingTennisRankings && !tennisRankingsCache[activeTennisRankingsTab]}
+              error={tennisRankingsError}
+            />
+          </>
         )}
 
         {/* ── NBA Standings View ── */}

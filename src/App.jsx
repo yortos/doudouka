@@ -13,9 +13,10 @@ import F1ConstructorPage from './components/F1ConstructorPage.jsx'
 import MatchModal from './components/MatchModal.jsx'
 import Standings from './components/Standings.jsx'
 import TeamPage from './components/TeamPage.jsx'
+import TennisRankings from './components/TennisRankings.jsx'
 import {
   fetchScoreboard, fetchStandings,
-  fetchNBAScoreboard, fetchNBAStandings, fetchTennisScoreboard, fetchF1Scoreboard, fetchF1Standings,
+  fetchNBAScoreboard, fetchNBAStandings, fetchTennisScoreboard, fetchTennisRankings, fetchF1Scoreboard, fetchF1Standings,
 } from './api.js'
 import { FETCHABLE_LEAGUES, getSport } from './sports.js'
 
@@ -67,6 +68,11 @@ export default function App() {
   const [loadingNBAStandings, setLoadingNBAStandings] = useState(false)
   const [nbaStandingsError, setNBAStandingsError] = useState(null)
 
+  // Tennis rankings state (keyed by league id: 'atp' | 'wta')
+  const [tennisRankingsCache, setTennisRankingsCache] = useState({})
+  const [loadingTennisRankings, setLoadingTennisRankings] = useState(false)
+  const [tennisRankingsError, setTennisRankingsError] = useState(null)
+
   const [date, setDate] = useState(new Date())
 
   // Soccer caches
@@ -117,6 +123,22 @@ export default function App() {
       setLoadingF1Standings(false)
     }
   }, [f1Standings])
+
+  // ─── Tennis rankings fetch ────────────────────────────────────────────────
+
+  const loadTennisRankings = useCallback(async (leagueId) => {
+    if (tennisRankingsCache[leagueId]) return
+    setLoadingTennisRankings(true)
+    setTennisRankingsError(null)
+    try {
+      const data = await fetchTennisRankings(leagueId)
+      setTennisRankingsCache(prev => ({ ...prev, [leagueId]: data }))
+    } catch (err) {
+      setTennisRankingsError(err.message)
+    } finally {
+      setLoadingTennisRankings(false)
+    }
+  }, [tennisRankingsCache])
 
   // ─── NBA standings fetch ──────────────────────────────────────────────────
 
@@ -235,6 +257,9 @@ export default function App() {
     if (activeView === 'standings' && activeSport === 'basketball') {
       loadNBAStandings()
     }
+    if (activeView === 'standings' && activeSport === 'tennis') {
+      loadTennisRankings(activeLeague)
+    }
   }, [activeView, activeLeague, activeSport]) // eslint-disable-line
 
   // Auto-refresh every 60s for today's matches
@@ -323,6 +348,14 @@ export default function App() {
                   onClick={() => setActiveView('standings')}
                 >
                   Standings
+                </button>
+              )}
+              {activeSport === 'tennis' && (
+                <button
+                  className={`view-toggle-btn ${activeView === 'standings' ? 'active' : ''}`}
+                  onClick={() => setActiveView('standings')}
+                >
+                  Rankings
                 </button>
               )}
             </div>
@@ -540,6 +573,15 @@ export default function App() {
               setF1PageBackView('standings')
               setActiveView('f1-constructor')
             }}
+          />
+        )}
+
+        {/* ── Tennis Rankings View ── */}
+        {activeView === 'standings' && activeSport === 'tennis' && (
+          <TennisRankings
+            entries={tennisRankingsCache[activeLeague]}
+            loading={loadingTennisRankings && !tennisRankingsCache[activeLeague]}
+            error={tennisRankingsError}
           />
         )}
 

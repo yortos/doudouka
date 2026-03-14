@@ -131,14 +131,14 @@ const ATP_LEAGUE = {
   id: 'atp', sport: 'tennis',
   name: 'ATP Tour', shortName: 'ATP', flag: '\uD83C\uDFBE',
   primaryColor: '#0b3d82', accentColor: '#7ec8e3',
-  knownBroadcasts: { tv: ['Tennis Channel'], streaming: ['Tennis Channel+'] },
+  knownBroadcasts: { tv: ['Tennis Channel'], streaming: ['Tennis Channel+', 'Peacock'] },
 }
 
 const WTA_LEAGUE = {
   id: 'wta', sport: 'tennis',
   name: 'WTA Tour', shortName: 'WTA', flag: '\uD83C\uDFBE',
   primaryColor: '#a01060', accentColor: '#f8c8e0',
-  knownBroadcasts: { tv: ['Tennis Channel'], streaming: ['Tennis Channel+'] },
+  knownBroadcasts: { tv: ['Tennis Channel'], streaming: ['Tennis Channel+', 'Peacock'] },
 }
 
 const F1_LEAGUE = {

@@ -283,9 +283,14 @@ function parseTennisEvents(events, leagueId, filterDate) {
       allComps = event.competitions || []
     }
 
-    // Filter competitions to the requested date
+    // Filter competitions to the requested date.
+    // Live competitions are always included regardless of date, because a match
+    // scheduled for e.g. 7 PM PDT has a UTC date of the following day, which
+    // would otherwise cause it to be filtered out for viewers in earlier timezones.
     if (filterDateStr) {
       allComps = allComps.filter(comp => {
+        const state = comp.status?.type?.state
+        if (state === 'in') return true
         const compDate = (comp.date || '').slice(0, 10).replace(/-/g, '')
         return compDate === filterDateStr
       })
@@ -341,6 +346,31 @@ function parseTennisEvents(events, leagueId, filterDate) {
     })
   })
   return matches
+}
+
+export async function fetchTennisRankings(leagueId) {
+  const url = `${ESPN_BASE}/tennis/${leagueId}/rankings`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Tennis rankings failed: HTTP ${res.status}`)
+  const data = await res.json()
+  return parseTennisRankings(data)
+}
+
+function parseTennisRankings(data) {
+  const ranks = data.rankings?.[0]?.ranks || []
+  return ranks.map(entry => ({
+    rank: entry.current || 0,
+    previousRank: entry.previous || 0,
+    id: entry.athlete?.id,
+    name: entry.athlete?.displayName || 'Player',
+    shortName: entry.athlete?.shortname || '',
+    countryAbbr: entry.athlete?.citizenshipCountry || '',
+    flagHref: entry.athlete?.flag || null,
+    flagAlt: entry.athlete?.flagAltText || '',
+    headshot: entry.athlete?.headshot || null,
+    points: Math.round(entry.points ?? 0).toLocaleString(),
+    age: entry.athlete?.age || null,
+  }))
 }
 
 // ─── F1 ────────────────────────────────────────────────────────────────────────

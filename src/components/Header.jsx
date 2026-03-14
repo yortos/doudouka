@@ -12,7 +12,7 @@ export default function Header() {
       <div className="header-inner">
         <div className="header-logo">
           <img src="/apple-touch-icon.png" alt="" className="header-logo-icon" />
-          doudouka
+          Matchboard
         </div>
         <div className="header-date">{label}</div>
       </div>

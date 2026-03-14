@@ -132,6 +132,10 @@ export async function fetchTennisScoreboard(leagueId = 'atp', date = new Date())
   return hydrateDates(data)
 }
 
+export async function fetchTennisRankings(leagueId = 'atp') {
+  return apiFetch(`/api/standings?sport=tennis&league=${leagueId}`)
+}
+
 // ─── F1 ────────────────────────────────────────────────────────────────────────
 
 export async function fetchF1Scoreboard() {

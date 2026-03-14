@@ -2,6 +2,7 @@ import {
   fetchSoccerStandings,
   fetchNBAStandings,
   fetchF1Standings,
+  fetchTennisRankings,
 } from './_espn.js'
 
 export default async function handler(req, res) {
@@ -18,6 +19,8 @@ export default async function handler(req, res) {
       data = await fetchNBAStandings()
     } else if (sport === 'f1') {
       data = await fetchF1Standings()
+    } else if (sport === 'tennis') {
+      data = await fetchTennisRankings(league)
     } else {
       return res.status(400).json({ error: `Unknown sport: ${sport}` })
     }

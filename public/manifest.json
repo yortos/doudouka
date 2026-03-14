@@ -1,6 +1,6 @@
 {
-  "name": "doudouka",
-  "short_name": "doudouka",
+  "name": "Matchboard",
+  "short_name": "Matchboard",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

@@ -18,7 +18,7 @@ function StatusBadge({ state, name, detail }) {
 }
 
 function PlayerRow({ player, isWinner, state, noSpoilers }) {
-  const winnerStyle = isWinner && state === 'post'
+  const winnerStyle = isWinner && state === 'post' && !noSpoilers
     ? { fontWeight: 800, color: 'var(--text)' }
     : { color: 'var(--text-secondary)' }
 

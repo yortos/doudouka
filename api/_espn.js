@@ -317,6 +317,23 @@ function parseTennisEvents(events, leagueId, filterDate) {
         if (ls.tiebreak != null && ls.winner === false) return `${score}(${ls.tiebreak})`
         return score
       })
+      // For doubles, ESPN uses `competitor.roster` (an object with `displayName` and
+      // `athletes` array) instead of `competitor.athlete` (singles).
+      const getCompName = (c, fallback) => {
+        if (c.athlete?.displayName) return c.athlete.displayName
+        if (c.roster?.displayName) return c.roster.displayName
+        return fallback
+      }
+      const getCompShortName = (c, fallback) => {
+        if (c.athlete?.shortName) return c.athlete.shortName
+        if (c.athlete?.displayName) return c.athlete.displayName.split(' ').slice(-1)[0]
+        if (c.roster?.shortDisplayName) return c.roster.shortDisplayName
+        return fallback
+      }
+      const getCompCountry = (c) => {
+        if (c.athlete) return c.athlete?.flag?.alt || c.athlete?.country?.abbreviation || ''
+        return c.roster?.athletes?.[0]?.flag?.alt || ''
+      }
       matches.push({
         id: `${event.id}-${ci}`,
         sport: 'tennis',
@@ -330,18 +347,18 @@ function parseTennisEvents(events, leagueId, filterDate) {
         round: comp.type?.text || status.shortDetail || '',
         player1: {
           id: p1.athlete?.id || p1.id,
-          name: p1.athlete?.displayName || p1.athlete?.shortName || 'Player 1',
-          shortName: p1.athlete?.shortName || (p1.athlete?.displayName?.split(' ').slice(-1)[0] ?? 'P1'),
-          countryAbbr: p1.athlete?.flag?.alt || p1.athlete?.country?.abbreviation || '',
+          name: getCompName(p1, 'Player 1'),
+          shortName: getCompShortName(p1, 'P1'),
+          countryAbbr: getCompCountry(p1),
           seed: p1.curatedRank?.current || null,
           sets: getSets(p1),
           winner: p1.winner || false,
         },
         player2: {
           id: p2.athlete?.id || p2.id,
-          name: p2.athlete?.displayName || p2.athlete?.shortName || 'Player 2',
-          shortName: p2.athlete?.shortName || (p2.athlete?.displayName?.split(' ').slice(-1)[0] ?? 'P2'),
-          countryAbbr: p2.athlete?.flag?.alt || p2.athlete?.country?.abbreviation || '',
+          name: getCompName(p2, 'Player 2'),
+          shortName: getCompShortName(p2, 'P2'),
+          countryAbbr: getCompCountry(p2),
           seed: p2.curatedRank?.current || null,
           sets: getSets(p2),
           winner: p2.winner || false,

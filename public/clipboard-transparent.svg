@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="80" fill="#F2CC8F"/>
+  
+  <!-- OUTER STRUCTURE -->
+  <g stroke="#3D405B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <rect x="56" y="92" width="400" height="360"></rect>
+    <rect x="170" y="72" width="172" height="70"></rect>
+    <path d="M213 72a43 43 0 0 1 86 0"></path>
+    <rect x="98" y="166" width="316" height="247"></rect>
+  </g>
+
+  <!-- INNER GRID (15% thinner) -->
+  <g stroke="#3D405B" stroke-width="18.7" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <line x1="154" y1="182" x2="154" y2="397"></line>
+    <line x1="294" y1="182" x2="294" y2="397"></line>
+    <line x1="354" y1="182" x2="354" y2="397"></line>
+
+    <line x1="114" y1="242" x2="398" y2="242"></line>
+    <line x1="114" y1="302" x2="398" y2="302"></line>
+  </g>
+
+</svg>

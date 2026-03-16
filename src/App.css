@@ -41,6 +41,9 @@
   --spoiler-on-border:   rgba(37, 99, 235, 0.25);
   --spoiler-on-text:     #93bbfd;
   --spoiler-on-track:    #2563eb;
+
+  --bg-nav-hover:   rgba(79, 55, 45, 0.15);
+  --bg-nav-active:  rgba(237, 201, 81, 0.08);
 }
 
 @media (prefers-color-scheme: light) {
@@ -68,6 +71,9 @@
     --spoiler-off-track:   #f0c000;
     --spoiler-on-bg:       rgba(37, 99, 235, 0.07);
     --spoiler-on-text:     #1d4ed8;
+
+    --bg-nav-hover:   rgba(0, 0, 0, 0.05);
+    --bg-nav-active:  rgba(0, 0, 0, 0.06);
   }
 }
 
@@ -237,8 +243,8 @@ body {
   text-align: left;
   transition: background var(--transition), color var(--transition);
 }
-.sidebar-sport:hover { background: rgba(79, 55, 45, 0.15); color: var(--text); }
-.sidebar-sport.active { background: rgba(237, 201, 81, 0.08); }
+.sidebar-sport:hover { background: var(--bg-nav-hover); color: var(--text); }
+.sidebar-sport.active { background: var(--bg-nav-active); }
 .sidebar-sport.active .sidebar-sport-name { color: var(--accent); font-weight: 700; }
 
 .sidebar-sport-icon { font-size: 18px; flex-shrink: 0; line-height: 1; }
@@ -269,7 +275,7 @@ body {
   position: relative;
   transition: color var(--transition), background var(--transition);
 }
-.sidebar-league:hover { color: var(--text-secondary); background: rgba(79, 55, 45, 0.1); }
+.sidebar-league:hover { color: var(--text-secondary); background: var(--bg-nav-hover); }
 .sidebar-league.active { color: var(--accent); }
 .sidebar-league.active::before {
   content: '';

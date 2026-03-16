@@ -15,7 +15,8 @@
   --bg-card:         rgba(79, 55, 45, 0.14);
   --bg-card-hover:   rgba(79, 55, 45, 0.26);
   --bg-bottom:          #110d0a;
-  --bottom-nav-height:  88px;
+  --bottom-nav-height:  72px;
+  --sidebar-width:      220px;
   --border:          rgba(237, 201, 81, 0.1);
   --border-active:   rgba(237, 201, 81, 0.28);
   --text:            #f5f0e8;
@@ -158,16 +159,6 @@ body {
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-.league-strip {
-  display: flex;
-  gap: 6px;
-  padding: 8px 12px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  border-bottom: 1px solid var(--border);
-}
-.league-strip::-webkit-scrollbar { display: none; }
 
 .league-pill {
   flex-shrink: 0;
@@ -197,7 +188,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 8px 4px 6px;
+  padding: 10px 4px 8px;
   gap: 3px;
   cursor: pointer;
   border: none;
@@ -205,15 +196,15 @@ body {
   position: relative;
   transition: color var(--transition);
 }
-.sport-tab-icon { font-size: 20px; line-height: 1; }
-.sport-tab-name { font-size: 9px; font-weight: 500; color: var(--text-muted); }
+.sport-tab-icon { font-size: 26px; line-height: 1; }
+.sport-tab-name { font-size: 11px; font-weight: 500; color: var(--text-muted); }
 .sport-tab.active .sport-tab-name { color: var(--accent); font-weight: 700; }
 .sport-tab.active::before {
   content: '';
   position: absolute;
   top: 0; left: 50%;
   transform: translateX(-50%);
-  width: 28px; height: 2px;
+  width: 32px; height: 3px;
   background: var(--accent);
   border-radius: 0 0 2px 2px;
 }

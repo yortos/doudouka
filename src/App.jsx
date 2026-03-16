@@ -71,7 +71,6 @@ export default function App() {
   const [tennisRankingsCache, setTennisRankingsCache] = useState({})
   const [loadingTennisRankings, setLoadingTennisRankings] = useState(false)
   const [tennisRankingsError, setTennisRankingsError] = useState(null)
-  const [activeTennisRankingsTab, setActiveTennisRankingsTab] = useState('atp')
 
   const [date, setDate] = useState(new Date())
 
@@ -270,9 +269,9 @@ export default function App() {
       loadNBAStandings()
     }
     if (activeView === 'standings' && activeSport === 'tennis') {
-      loadTennisRankings(activeTennisRankingsTab)
+      loadTennisRankings(activeLeague)
     }
-  }, [activeView, activeLeague, activeSport, activeTennisRankingsTab]) // eslint-disable-line
+  }, [activeView, activeLeague, activeSport]) // eslint-disable-line
 
   // Auto-refresh every 60s for today's matches
   useEffect(() => {
@@ -600,23 +599,9 @@ export default function App() {
         {/* ── Tennis Rankings View ── */}
         {activeView === 'standings' && activeSport === 'tennis' && (
           <>
-            <div className="view-toggle" style={{ marginBottom: 12 }}>
-              <button
-                className={`view-toggle-btn ${activeTennisRankingsTab === 'atp' ? 'active' : ''}`}
-                onClick={() => setActiveTennisRankingsTab('atp')}
-              >
-                ATP
-              </button>
-              <button
-                className={`view-toggle-btn ${activeTennisRankingsTab === 'wta' ? 'active' : ''}`}
-                onClick={() => setActiveTennisRankingsTab('wta')}
-              >
-                WTA
-              </button>
-            </div>
             <TennisRankings
-              entries={tennisRankingsCache[activeTennisRankingsTab]}
-              loading={loadingTennisRankings && !tennisRankingsCache[activeTennisRankingsTab]}
+              entries={tennisRankingsCache[activeLeague]}
+              loading={loadingTennisRankings && !tennisRankingsCache[activeLeague]}
               error={tennisRankingsError}
             />
           </>

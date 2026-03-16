@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Header from './components/Header.jsx'
 import SportTabs from './components/SportTabs.jsx'
-import LeagueTabs from './components/LeagueTabs.jsx'
 import DateNav from './components/DateNav.jsx'
 import MatchCard from './components/MatchCard.jsx'
 import TennisCard from './components/TennisCard.jsx'
@@ -329,14 +328,13 @@ export default function App() {
     <div className="app">
       <Header />
 
-      {/* Sport selector */}
-      <SportTabs activeSport={activeSport} onChange={handleSportChange} />
-
-      {/* League tabs (soccer has many, tennis has ATP/WTA, others hide) */}
-      <LeagueTabs
-        leagues={sportDef?.leagues}
+      {/* Sport selector + league pills */}
+      <SportTabs
+        activeSport={activeSport}
+        onSportChange={handleSportChange}
         activeLeague={activeLeague}
-        onChange={id => { setActiveLeague(id); setActiveView('matches') }}
+        onLeagueChange={id => { setActiveLeague(id); setActiveView('matches') }}
+        leagues={sportDef?.leagues}
       />
 
       {/* No Spoilers card */}

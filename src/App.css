@@ -14,7 +14,7 @@
   --bg-elevated:     #140f0c;
   --bg-card:         rgba(79, 55, 45, 0.14);
   --bg-card-hover:   rgba(79, 55, 45, 0.26);
-  --bg-bottom:       #110d0a;   /* used by .bottom-nav (Task 4) */
+  --bg-bottom:       #110d0a;
   --border:          rgba(237, 201, 81, 0.1);
   --border-active:   rgba(237, 201, 81, 0.28);
   --text:            #f5f0e8;
@@ -22,8 +22,8 @@
   --text-muted:      #6b5040;
   --live:            var(--red);
   --live-glow:       rgba(204, 42, 54, 0.3);
-  --accent:          #edc951;   /* used by .bottom-nav, .match-grid (Tasks 4, 6) */
-  --accent-text:     #1a1208;   /* used by .bottom-nav (Task 4) */
+  --accent:          #edc951;   /* used by .match-grid (Task 6) */
+  --accent-text:     #1a1208;
   --shadow-card:     none;      /* used by .match-grid cards (Task 6) */
   --radius:          12px;
   --radius-sm:       8px;
@@ -145,107 +145,76 @@ body {
   font-weight: 500;
 }
 
-/* ─── Sport Tabs ────────────────────────────────────────────────────────────── */
-.sport-tabs-wrap {
-  background: var(--bg-elevated);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
+/* ─── Bottom Navigation ─────────────────────────────────────────────────────── */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 200;
+  background: var(--bg-bottom);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.sport-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.league-strip {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+}
+.league-strip::-webkit-scrollbar { display: none; }
+
+.league-pill {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.league-pill.active {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
 
 .sport-tabs {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px;
   display: flex;
-  gap: 0;
+  padding: 0 8px;
 }
-
 .sport-tab {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 11px 18px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
+  padding: 8px 4px 6px;
+  gap: 3px;
   cursor: pointer;
   border: none;
   background: none;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color var(--transition), border-color var(--transition);
+  position: relative;
+  transition: color var(--transition);
 }
-
-.sport-tab:hover { color: var(--text); }
-
-.sport-tab.active {
-  color: var(--text);
-  border-bottom-color: var(--gold);
-}
-
-.sport-tab-icon { font-size: 15px; }
-
-/* ─── League Tabs ───────────────────────────────────────────────────────────── */
-.league-tabs-wrap {
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.league-tabs-wrap::-webkit-scrollbar { display: none; }
-
-.league-tabs {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 16px;
-  display: flex;
-  gap: 2px;
-}
-
-.league-tabs-cups {
-  border-top: 1px solid var(--border);
-  opacity: 0.9;
-}
-
-.league-tabs-european {
-  border-top: 1px solid var(--border);
-  opacity: 0.85;
-}
-
-.league-tab {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  cursor: pointer;
-  border: none;
-  background: none;
-  white-space: nowrap;
-  border-bottom: 2px solid transparent;
-  transition: color var(--transition), border-color var(--transition);
-}
-
-.league-tab:hover { color: var(--text); }
-
-.league-tab.active {
-  color: var(--text);
-  border-bottom-color: var(--league-accent, var(--gold));
-}
-
-.league-tab-flag { font-size: 14px; }
-
-.league-tab-divider {
-  width: 1px;
-  height: 20px;
-  background: var(--border);
-  align-self: center;
-  flex-shrink: 0;
-  margin: 0 4px;
+.sport-tab-icon { font-size: 20px; line-height: 1; }
+.sport-tab-name { font-size: 9px; font-weight: 500; color: var(--text-muted); }
+.sport-tab.active .sport-tab-name { color: var(--accent); font-weight: 700; }
+.sport-tab.active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 28px; height: 2px;
+  background: var(--accent);
+  border-radius: 0 0 2px 2px;
 }
 
 /* ─── View Toggle (Matches / Standings) ─────────────────────────────────────── */

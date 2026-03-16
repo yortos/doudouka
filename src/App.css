@@ -23,9 +23,9 @@
   --text-muted:      #6b5040;
   --live:            var(--red);
   --live-glow:       rgba(204, 42, 54, 0.3);
-  --accent:          #edc951;   /* used by .match-grid (Task 6) */
+  --accent:          #edc951;
   --accent-text:     #1a1208;
-  --shadow-card:     none;      /* used by .match-grid cards (Task 6) */
+  --shadow-card:     none;
   --radius:          12px;
   --radius-sm:       8px;
   --shadow:          0 4px 24px rgba(0, 0, 0, 0.5);
@@ -329,11 +329,24 @@ body {
   gap: 8px;
 }
 
+.match-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+@media (min-width: 640px) {
+  .match-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 960px) {
+  .match-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
 .match-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 14px 16px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow-card);
   cursor: pointer;
   transition: background var(--transition), border-color var(--transition),
     box-shadow var(--transition), transform var(--transition);
@@ -402,7 +415,6 @@ body {
 }
 
 .status-badge {
-  margin-left: auto;
   font-size: 11px;
   font-weight: 700;
   padding: 3px 8px;
@@ -426,23 +438,35 @@ body {
   50% { opacity: 0.65; }
 }
 
-/* Main match row: teams + score */
+/* Stacked card body: two team rows */
 .match-body {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
 }
 
-.match-team {
+.match-team-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
+  overflow: hidden;
 }
 
-.match-team.away {
-  flex-direction: row-reverse;
-  text-align: right;
+.match-team-row .team-name {
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Score row: score left, status badge right */
+.match-score-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
 }
 
 .team-logo {

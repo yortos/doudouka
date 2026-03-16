@@ -88,7 +88,7 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
       }}
       onClick={onClick}
     >
-      {/* Card header: league badge + time + status */}
+      {/* Header: league + time */}
       <div className="match-card-header">
         {league && league.id !== 'all' && (
           <span className="match-league-badge">{league.flag} {league.shortName}</span>
@@ -96,31 +96,33 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
         {match.legLabel && (
           <span className="leg-badge">{match.legLabel}</span>
         )}
-        <span className="match-time">{formatKickoff(match.date)}</span>
-        <StatusBadge
-          state={match.statusState}
-          name={match.statusName}
-          detail={match.statusDetail}
-          displayClock={match.displayClock}
-          period={match.period}
-          sport={match.sport}
-        />
+        <span className="match-time" style={{ marginLeft: 'auto' }}>{formatKickoff(match.date)}</span>
       </div>
 
-      {/* Teams and score */}
+      {/* Teams stacked */}
       <div className="match-body">
-        <div className="match-team">
+        <div className="match-team-row">
           <TeamLogo
             logo={match.home.logo}
             shortName={match.home.shortName}
+            size={24}
             onClick={onTeamClick ? () => onTeamClick(match.home) : null}
           />
-          <div>
-            <span className="team-name">{match.home.name}</span>
-            <span className="team-name-short">{match.home.shortName}</span>
-          </div>
+          <span className="team-name">{match.home.shortName || match.home.name}</span>
         </div>
+        <div className="match-team-row">
+          <TeamLogo
+            logo={match.away.logo}
+            shortName={match.away.shortName}
+            size={24}
+            onClick={onTeamClick ? () => onTeamClick(match.away) : null}
+          />
+          <span className="team-name">{match.away.shortName || match.away.name}</span>
+        </div>
+      </div>
 
+      {/* Score row */}
+      <div className="match-score-row">
         <div
           className="match-score-wrap"
           onClick={noSpoilers && hasScore ? handleScoreTap : undefined}
@@ -146,31 +148,15 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
             </span>
           )}
         </div>
-
-        <div className="match-team away">
-          <TeamLogo
-            logo={match.away.logo}
-            shortName={match.away.shortName}
-            onClick={onTeamClick ? () => onTeamClick(match.away) : null}
-          />
-          <div>
-            <span className="team-name">{match.away.name}</span>
-            <span className="team-name-short">{match.away.shortName}</span>
-          </div>
-        </div>
+        <StatusBadge
+          state={match.statusState}
+          name={match.statusName}
+          detail={match.statusDetail}
+          displayClock={match.displayClock}
+          period={match.period}
+          sport={match.sport}
+        />
       </div>
-
-      {/* Footer: broadcasts + venue */}
-      {(broadcasts.length > 0 || match.venue) && (
-        <div className="match-footer">
-          {broadcasts.slice(0, 4).map(b => (
-            <span key={b} className="broadcast-chip">&#128250; {b}</span>
-          ))}
-          {match.venue && (
-            <span className="venue-chip">&#127967; {match.venue}</span>
-          )}
-        </div>
-      )}
     </div>
   )
 }

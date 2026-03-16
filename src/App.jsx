@@ -487,7 +487,7 @@ export default function App() {
                 {live.length > 0 && (
                   <>
                     <div className="section-label">Live Now</div>
-                    <div className="match-list">
+                    <div className="match-grid">
                       {live.map(m => (
                         <MatchCard
                           key={m.id}
@@ -504,7 +504,7 @@ export default function App() {
                 {upcoming.length > 0 && (
                   <>
                     <div className="section-label">Upcoming</div>
-                    <div className="match-list">
+                    <div className="match-grid">
                       {upcoming.map(m => (
                         <MatchCard
                           key={m.id}
@@ -521,7 +521,7 @@ export default function App() {
                 {finished.length > 0 && (
                   <>
                     <div className="section-label">Results</div>
-                    <div className="match-list">
+                    <div className="match-grid">
                       {finished.map(m => (
                         <MatchCard
                           key={m.id}

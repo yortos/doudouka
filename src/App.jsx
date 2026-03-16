@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Header from './components/Header.jsx'
 import SportTabs from './components/SportTabs.jsx'
+import Sidebar from './components/Sidebar.jsx'
 import DateNav from './components/DateNav.jsx'
 import MatchCard from './components/MatchCard.jsx'
 import TennisCard from './components/TennisCard.jsx'
@@ -335,13 +336,18 @@ export default function App() {
         : null
       } />
 
-      {/* Sport selector + league pills */}
+      {/* Sport navigation — Sidebar (desktop) + SportTabs (mobile) */}
+      <Sidebar
+        activeSport={activeSport}
+        onSportChange={handleSportChange}
+        activeLeague={activeLeague}
+        onLeagueChange={handleLeagueChange}
+      />
       <SportTabs
         activeSport={activeSport}
         onSportChange={handleSportChange}
         activeLeague={activeLeague}
         onLeagueChange={handleLeagueChange}
-        leagues={sportDef?.leagues}
       />
 
       {/* No Spoilers card */}

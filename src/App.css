@@ -14,7 +14,7 @@
   --bg-elevated:     #140f0c;
   --bg-card:         rgba(79, 55, 45, 0.14);
   --bg-card-hover:   rgba(79, 55, 45, 0.26);
-  --bg-bottom:       #110d0a;
+  --bg-bottom:       #110d0a;   /* used by .bottom-nav (Task 4) */
   --border:          rgba(237, 201, 81, 0.1);
   --border-active:   rgba(237, 201, 81, 0.28);
   --text:            #f5f0e8;
@@ -22,9 +22,9 @@
   --text-muted:      #6b5040;
   --live:            var(--red);
   --live-glow:       rgba(204, 42, 54, 0.3);
-  --accent:          #edc951;
-  --accent-text:     #1a1208;
-  --shadow-card:     none;
+  --accent:          #edc951;   /* used by .bottom-nav, .match-grid (Tasks 4, 6) */
+  --accent-text:     #1a1208;   /* used by .bottom-nav (Task 4) */
+  --shadow-card:     none;      /* used by .match-grid cards (Task 6) */
   --radius:          12px;
   --radius-sm:       8px;
   --shadow:          0 4px 24px rgba(0, 0, 0, 0.5);
@@ -33,10 +33,12 @@
   /* Spoiler card */
   --spoiler-off-bg:      rgba(235, 171, 37, 0.1);
   --spoiler-off-border:  rgba(235, 171, 37, 0.3);
-  --spoiler-off-text:    #EBAD25;
+  --spoiler-off-text:    #ebad25;
+  --spoiler-off-track:   #ebad25;
   --spoiler-on-bg:       rgba(37, 99, 235, 0.12);
   --spoiler-on-border:   rgba(37, 99, 235, 0.25);
   --spoiler-on-text:     #93bbfd;
+  --spoiler-on-track:    #2563eb;
 }
 
 @media (prefers-color-scheme: light) {
@@ -61,8 +63,8 @@
     --spoiler-off-bg:      #fffbe6;
     --spoiler-off-border:  #f0c000;
     --spoiler-off-text:    #92660a;
+    --spoiler-off-track:   #f0c000;
     --spoiler-on-bg:       rgba(37, 99, 235, 0.07);
-    --spoiler-on-border:   rgba(37, 99, 235, 0.25);
     --spoiler-on-text:     #1d4ed8;
   }
 }
@@ -1701,7 +1703,7 @@ body {
   height: 31px;
   border-radius: 999px;
   /* OFF — amber */
-  background: #EBAD25;
+  background: var(--spoiler-off-track);
   position: relative;
   transition: background 0.25s ease;
   flex-shrink: 0;
@@ -1710,7 +1712,7 @@ body {
 
 .ns-toggle-track.on {
   /* ON — blue */
-  background: #2563eb;
+  background: var(--spoiler-on-track);
 }
 
 /* Thumb */

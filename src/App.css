@@ -470,16 +470,12 @@ body {
 }
 
 .team-logo {
-  width: 36px;
-  height: 36px;
   object-fit: contain;
   flex-shrink: 0;
   border-radius: 4px;
 }
 
 .team-logo-placeholder {
-  width: 36px;
-  height: 36px;
   border-radius: 50%;
   background: rgba(79, 55, 45, 0.4);
   border: 1px solid rgba(237, 201, 81, 0.12);

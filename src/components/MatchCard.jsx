@@ -5,7 +5,7 @@ function formatKickoff(date) {
   return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 }
 
-function TeamLogo({ logo, shortName, size = 36, onClick }) {
+function TeamLogo({ logo, shortName, size = 24, onClick }) {
   const [err, setErr] = useState(false)
 
   const img = (!logo || err) ? (
@@ -72,11 +72,6 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
     } else {
       lastTapRef.current = now
     }
-  }
-
-  let broadcasts = match.broadcasts || []
-  if (broadcasts.length === 0 && league?.knownBroadcasts) {
-    broadcasts = [...(league.knownBroadcasts.streaming || []), ...(league.knownBroadcasts.tv || [])]
   }
 
   return (

@@ -108,6 +108,11 @@ export default function App() {
     setOtherError(null)
   }
 
+  function handleLeagueChange(leagueId) {
+    setActiveLeague(leagueId)
+    setActiveView('matches')
+  }
+
   // ─── F1 standings fetch ───────────────────────────────────────────────────
 
   const loadF1Standings = useCallback(async () => {
@@ -333,7 +338,7 @@ export default function App() {
         activeSport={activeSport}
         onSportChange={handleSportChange}
         activeLeague={activeLeague}
-        onLeagueChange={id => { setActiveLeague(id); setActiveView('matches') }}
+        onLeagueChange={handleLeagueChange}
         leagues={sportDef?.leagues}
       />
 

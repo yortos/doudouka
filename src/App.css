@@ -14,7 +14,8 @@
   --bg-elevated:     #140f0c;
   --bg-card:         rgba(79, 55, 45, 0.14);
   --bg-card-hover:   rgba(79, 55, 45, 0.26);
-  --bg-bottom:       #110d0a;
+  --bg-bottom:          #110d0a;
+  --bottom-nav-height:  88px;
   --border:          rgba(237, 201, 81, 0.1);
   --border-active:   rgba(237, 201, 81, 0.28);
   --text:            #f5f0e8;
@@ -93,7 +94,7 @@ body {
   max-width: 960px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 16px calc(88px + env(safe-area-inset-bottom, 0px));
+  padding: 0 16px calc(var(--bottom-nav-height) + env(safe-area-inset-bottom, 0px));
 }
 
 /* ─── Header ────────────────────────────────────────────────────────────────── */

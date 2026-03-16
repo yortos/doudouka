@@ -5,7 +5,7 @@ export default function SportTabs({ activeSport, onSportChange, activeLeague, on
   return (
     <nav className="bottom-nav" aria-label="Sport and league navigation">
       {showLeagues && (
-        <div className="league-strip" role="tablist">
+        <div className="league-strip" role="tablist" aria-label="League">
           {leagues.map(league => (
             <button
               key={league.id}
@@ -19,7 +19,7 @@ export default function SportTabs({ activeSport, onSportChange, activeLeague, on
           ))}
         </div>
       )}
-      <div className="sport-tabs" role="tablist">
+      <div className="sport-tabs" role="tablist" aria-label="Sport">
         {SPORTS.map(sport => (
           <button
             key={sport.id}

@@ -331,7 +331,10 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header />
+      <Header action={activeView === 'matches' && sportDef?.hasDateNav
+        ? <DateNav date={date} onChange={setDate} />
+        : null
+      } />
 
       {/* Sport selector + league pills */}
       <SportTabs
@@ -370,37 +373,31 @@ export default function App() {
 
       <div className="main-content">
         {/* View toggle (only soccer supports standings + team views) */}
-        <div style={{ display: ['team', 'f1-driver', 'f1-constructor'].includes(activeView) ? 'none' : 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <div className="view-toggle">
+        <div style={{ display: ['team', 'f1-driver', 'f1-constructor'].includes(activeView) ? 'none' : 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <div className="view-toggle">
+            <button
+              className={`view-toggle-btn ${activeView === 'matches' ? 'active' : ''}`}
+              onClick={() => setActiveView('matches')}
+            >
+              {activeSport === 'f1' ? 'Races' : 'Matches'}
+            </button>
+            {((isSoccer && activeLeague !== 'all') || activeSport === 'f1' || activeSport === 'basketball') && (
               <button
-                className={`view-toggle-btn ${activeView === 'matches' ? 'active' : ''}`}
-                onClick={() => setActiveView('matches')}
+                className={`view-toggle-btn ${activeView === 'standings' ? 'active' : ''}`}
+                onClick={() => setActiveView('standings')}
               >
-                {activeSport === 'f1' ? 'Races' : 'Matches'}
+                Standings
               </button>
-              {((isSoccer && activeLeague !== 'all') || activeSport === 'f1' || activeSport === 'basketball') && (
-                <button
-                  className={`view-toggle-btn ${activeView === 'standings' ? 'active' : ''}`}
-                  onClick={() => setActiveView('standings')}
-                >
-                  Standings
-                </button>
-              )}
-              {activeSport === 'tennis' && (
-                <button
-                  className={`view-toggle-btn ${activeView === 'standings' ? 'active' : ''}`}
-                  onClick={() => setActiveView('standings')}
-                >
-                  Rankings
-                </button>
-              )}
-            </div>
+            )}
+            {activeSport === 'tennis' && (
+              <button
+                className={`view-toggle-btn ${activeView === 'standings' ? 'active' : ''}`}
+                onClick={() => setActiveView('standings')}
+              >
+                Rankings
+              </button>
+            )}
           </div>
-
-          {activeView === 'matches' && sportDef?.hasDateNav && (
-            <DateNav date={date} onChange={setDate} />
-          )}
         </div>
 
         {/* ── Matches View ── */}

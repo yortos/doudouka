@@ -91,6 +91,7 @@ export default function App() {
 
   const [selectedMatch, setSelectedMatch] = useState(null)
   const [noSpoilers, setNoSpoilers] = useState(() => localStorage.getItem('noSpoilers') !== '0')
+  const [gridRedesign, setGridRedesign] = useState(false)
 
   const refreshRef = useRef(null)
 
@@ -273,6 +274,14 @@ export default function App() {
       loadTennisRankings(activeLeague)
     }
   }, [activeView, activeLeague, activeSport]) // eslint-disable-line
+
+  // Fetch feature flags on mount
+  useEffect(() => {
+    fetch('/api/flags')
+      .then(r => r.json())
+      .then(flags => setGridRedesign(flags['grid-redesign'] ?? false))
+      .catch(() => {})
+  }, [])
 
   // Auto-refresh every 60s for today's matches
   useEffect(() => {
@@ -492,15 +501,20 @@ export default function App() {
                 {live.length > 0 && (
                   <>
                     <div className="section-label">
-                      <span className="section-label-text"><span className="live-dot" /> Live Now</span>
-                      <span className="section-count">{live.length} {live.length === 1 ? 'match' : 'matches'}</span>
+                      {gridRedesign ? (
+                        <>
+                          <span className="section-label-text"><span className="live-dot" /> Live Now</span>
+                          <span className="section-count">{live.length} {live.length === 1 ? 'match' : 'matches'}</span>
+                        </>
+                      ) : 'Live Now'}
                     </div>
-                    <div className="match-grid">
+                    <div className={gridRedesign ? 'match-grid' : 'match-list'}>
                       {live.map(m => (
                         <MatchCard
                           key={m.id}
                           match={m}
                           noSpoilers={noSpoilers}
+                          gridRedesign={gridRedesign}
                           onClick={() => setSelectedMatch(m)}
                           onTeamClick={isSoccer ? (team) => handleTeamClick(team, m.leagueId, 'matches') : null}
                         />
@@ -512,15 +526,20 @@ export default function App() {
                 {upcoming.length > 0 && (
                   <>
                     <div className="section-label">
-                      <span className="section-label-text">Upcoming</span>
-                      <span className="section-count">{upcoming.length} {upcoming.length === 1 ? 'match' : 'matches'}</span>
+                      {gridRedesign ? (
+                        <>
+                          <span className="section-label-text">Upcoming</span>
+                          <span className="section-count">{upcoming.length} {upcoming.length === 1 ? 'match' : 'matches'}</span>
+                        </>
+                      ) : 'Upcoming'}
                     </div>
-                    <div className="match-grid">
+                    <div className={gridRedesign ? 'match-grid' : 'match-list'}>
                       {upcoming.map(m => (
                         <MatchCard
                           key={m.id}
                           match={m}
                           noSpoilers={noSpoilers}
+                          gridRedesign={gridRedesign}
                           onClick={() => setSelectedMatch(m)}
                           onTeamClick={isSoccer ? (team) => handleTeamClick(team, m.leagueId, 'matches') : null}
                         />
@@ -532,15 +551,20 @@ export default function App() {
                 {finished.length > 0 && (
                   <>
                     <div className="section-label">
-                      <span className="section-label-text">Results</span>
-                      <span className="section-count">{finished.length} {finished.length === 1 ? 'match' : 'matches'}</span>
+                      {gridRedesign ? (
+                        <>
+                          <span className="section-label-text">Results</span>
+                          <span className="section-count">{finished.length} {finished.length === 1 ? 'match' : 'matches'}</span>
+                        </>
+                      ) : 'Results'}
                     </div>
-                    <div className="match-grid">
+                    <div className={gridRedesign ? 'match-grid' : 'match-list'}>
                       {finished.map(m => (
                         <MatchCard
                           key={m.id}
                           match={m}
                           noSpoilers={noSpoilers}
+                          gridRedesign={gridRedesign}
                           onClick={() => setSelectedMatch(m)}
                           onTeamClick={isSoccer ? (team) => handleTeamClick(team, m.leagueId, 'matches') : null}
                         />

@@ -5,7 +5,7 @@ function formatKickoff(date) {
   return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
 }
 
-function TeamLogo({ logo, shortName, size = 24, onClick }) {
+function TeamLogo({ logo, shortName, size = 36, onClick }) {
   const [err, setErr] = useState(false)
 
   const img = (!logo || err) ? (
@@ -60,7 +60,7 @@ function StatusBadge({ state, name, detail, displayClock, period, sport, date })
   return null
 }
 
-export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
+export default function MatchCard({ match, onClick, onTeamClick, noSpoilers, gridRedesign }) {
   const league = getLeague(match.leagueId)
   const isPre = match.statusState === 'pre'
   const hasScore = !isPre && match.home.score != null && match.away.score != null
@@ -78,6 +78,107 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
     }
   }
 
+  const cardStyle = {
+    '--league-color': league?.primaryColor,
+    '--league-accent': league?.accentColor,
+  }
+
+  // ── Legacy (list) design ──────────────────────────────────────────────────
+
+  if (!gridRedesign) {
+    let broadcasts = match.broadcasts || []
+    if (broadcasts.length === 0 && league?.knownBroadcasts) {
+      broadcasts = [...(league.knownBroadcasts.streaming || []), ...(league.knownBroadcasts.tv || [])]
+    }
+
+    return (
+      <div className="match-card" style={cardStyle} onClick={onClick}>
+        <div className="match-card-header">
+          {league && league.id !== 'all' && (
+            <span className="match-league-badge">{league.flag} {league.shortName}</span>
+          )}
+          {match.legLabel && (
+            <span className="leg-badge">{match.legLabel}</span>
+          )}
+          <span className="match-time">{formatKickoff(match.date)}</span>
+          <StatusBadge
+            state={match.statusState}
+            name={match.statusName}
+            detail={match.statusDetail}
+            displayClock={match.displayClock}
+            period={match.period}
+            sport={match.sport}
+          />
+        </div>
+
+        <div className="match-body">
+          <div className="match-team">
+            <TeamLogo
+              logo={match.home.logo}
+              shortName={match.home.shortName}
+              onClick={onTeamClick ? () => onTeamClick(match.home) : null}
+            />
+            <div>
+              <span className="team-name">{match.home.name}</span>
+              <span className="team-name-short">{match.home.shortName}</span>
+            </div>
+          </div>
+
+          <div
+            className="match-score-wrap"
+            onClick={noSpoilers && hasScore ? handleScoreTap : undefined}
+            style={noSpoilers && hasScore && !revealed ? { cursor: 'pointer' } : undefined}
+          >
+            <div className="match-score">
+              {hasScore ? (
+                <>
+                  <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.home.score}</span>
+                  <span className={`score-sep${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>&ndash;</span>
+                  <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.away.score}</span>
+                </>
+              ) : (
+                <span className="score-vs">vs</span>
+              )}
+            </div>
+            {noSpoilers && hasScore && !revealed && (
+              <span className="score-reveal-hint">double tap</span>
+            )}
+            {match.leg === 2 && match.aggregate && (
+              <span className="agg-score">
+                Agg: {match.aggregate.home}–{match.aggregate.away}
+              </span>
+            )}
+          </div>
+
+          <div className="match-team away">
+            <TeamLogo
+              logo={match.away.logo}
+              shortName={match.away.shortName}
+              onClick={onTeamClick ? () => onTeamClick(match.away) : null}
+            />
+            <div>
+              <span className="team-name">{match.away.name}</span>
+              <span className="team-name-short">{match.away.shortName}</span>
+            </div>
+          </div>
+        </div>
+
+        {(broadcasts.length > 0 || match.venue) && (
+          <div className="match-footer">
+            {broadcasts.slice(0, 4).map(b => (
+              <span key={b} className="broadcast-chip">&#128250; {b}</span>
+            ))}
+            {match.venue && (
+              <span className="venue-chip">&#127967; {match.venue}</span>
+            )}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // ── Redesign (grid) design ────────────────────────────────────────────────
+
   const stateClass = match.statusState === 'in' ? 'match-card--live'
     : match.statusState === 'pre' ? 'match-card--upcoming'
     : 'match-card--finished'
@@ -85,10 +186,7 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
   return (
     <div
       className={`match-card ${stateClass}`}
-      style={{
-        '--league-color': league?.primaryColor,
-        '--league-accent': league?.accentColor,
-      }}
+      style={cardStyle}
       onClick={onClick}
     >
       {/* Header: league badge (left) + status badge (right) */}

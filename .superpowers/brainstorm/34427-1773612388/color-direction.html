@@ -1,0 +1,91 @@
+<h2>Color Direction</h2>
+<p class="subtitle">The current app is dark-themed. The mockups you shared lean warm-light. Which direction for v1?</p>
+
+<div class="cards">
+
+  <!-- Option A: Keep Dark -->
+  <div class="card" data-choice="dark-evolved" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0d0a08;padding:16px;min-height:180px;border-radius:8px 8px 0 0;">
+      <!-- Header bar -->
+      <div style="background:rgba(255,255,255,0.06);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <span style="color:#edc951;font-weight:800;font-size:13px;">⚡ Matchboard</span>
+        <span style="color:#b09070;font-size:11px;">Sun, Mar 15</span>
+        <span style="background:rgba(237,201,81,0.15);color:#edc951;font-size:10px;padding:3px 8px;border-radius:6px;">Filter ⊞</span>
+      </div>
+      <!-- Cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:rgba(79,55,45,0.3);border:1px solid rgba(237,201,81,0.12);border-radius:8px;padding:10px;">
+          <div style="color:#6b5040;font-size:9px;margin-bottom:4px;">PREMIER LEAGUE</div>
+          <div style="color:#f5f0e8;font-size:12px;font-weight:600;line-height:1.3;">Liverpool<br>Tottenham</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+            <span style="color:#f5f0e8;font-size:14px;font-weight:700;">1 – 1</span>
+            <span style="background:#cc2a36;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;">67'</span>
+          </div>
+        </div>
+        <div style="background:rgba(79,55,45,0.3);border:1px solid rgba(237,201,81,0.12);border-radius:8px;padding:10px;">
+          <div style="color:#6b5040;font-size:9px;margin-bottom:4px;">LA LIGA</div>
+          <div style="color:#f5f0e8;font-size:12px;font-weight:600;line-height:1.3;">Barcelona<br>Sevilla</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+            <span style="color:#f5f0e8;font-size:14px;font-weight:700;">5 – 2</span>
+            <span style="color:#6b5040;font-size:9px;padding:2px 5px;border:1px solid #3a2a20;border-radius:4px;">FT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Dark — Evolved</h3>
+      <p>Keep the dark theme but refine the layout: filter bottom sheet, card grid, tighter typography. Same vibe, better structure.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Light Warm -->
+  <div class="card" data-choice="light-warm" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#f5f0e8;padding:16px;min-height:180px;border-radius:8px 8px 0 0;">
+      <!-- Header bar -->
+      <div style="background:#fff;border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+        <span style="color:#1a1208;font-weight:800;font-size:13px;">⚡ Matchboard</span>
+        <span style="color:#6b5040;font-size:11px;">Sun, Mar 15</span>
+        <span style="background:#1a1208;color:#f5f0e8;font-size:10px;padding:3px 8px;border-radius:6px;">Filter ⊞</span>
+      </div>
+      <!-- Cards -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#fff;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+          <div style="color:#9b8060;font-size:9px;margin-bottom:4px;">PREMIER LEAGUE</div>
+          <div style="color:#1a1208;font-size:12px;font-weight:600;line-height:1.3;">Liverpool<br>Tottenham</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+            <span style="color:#1a1208;font-size:14px;font-weight:700;">1 – 1</span>
+            <span style="background:#dc2626;color:#fff;font-size:9px;padding:2px 5px;border-radius:4px;">67'</span>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:8px;padding:10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);">
+          <div style="color:#9b8060;font-size:9px;margin-bottom:4px;">LA LIGA</div>
+          <div style="color:#1a1208;font-size:12px;font-weight:600;line-height:1.3;">Barcelona<br>Sevilla</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">
+            <span style="color:#1a1208;font-size:14px;font-weight:700;">5 – 2</span>
+            <span style="color:#9b8060;font-size:9px;padding:2px 5px;border:1px solid #e0d8cc;border-radius:4px;">FT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Light — Warm Cream</h3>
+      <p>Warm #f5f0e8 background, white cards, dark text. Clean editorial feel. Matches the color palette from the mockups you shared.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Dark + Light Toggle -->
+  <div class="card" data-choice="both" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:linear-gradient(135deg, #0d0a08 50%, #f5f0e8 50%);padding:16px;min-height:180px;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;">
+      <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:10px;padding:16px;text-align:center;border:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:22px;margin-bottom:6px;">☀️🌙</div>
+        <div style="color:#f5f0e8;font-size:12px;font-weight:600;">Build both</div>
+        <div style="color:rgba(245,240,232,0.6);font-size:10px;margin-top:4px;">System auto-switch</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>Both — System Theme</h3>
+      <p>Implement light + dark mode, auto-switching with the device. More work for v1 but you get both.</p>
+    </div>
+  </div>
+
+</div>

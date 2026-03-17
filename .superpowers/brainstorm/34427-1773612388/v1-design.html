@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matchboard v1 Redesign</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #1a1612;
+    color: #f0ebe0;
+    padding: 24px 16px 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .subtitle { color: #7a6a5a; font-size: 14px; margin-bottom: 28px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #7a6a5a;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    margin-top: 28px;
+  }
+
+  .phones {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .phone {
+    width: 280px;
+    flex-shrink: 0;
+  }
+
+  .phone-label {
+    text-align: center;
+    font-size: 12px;
+    color: #7a6a5a;
+    margin-bottom: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── LIGHT PHONE ── */
+  .phone-light .phone-shell {
+    background: #f5f0e8;
+    border-radius: 32px;
+    border: 6px solid #2a2420;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .phone-light .ph {
+    background: #f5f0e8;
+    min-height: 580px;
+    position: relative;
+  }
+  .phone-light .ph-header {
+    background: #f5f0e8;
+    padding: 16px 14px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .phone-light .ph-logo {
+    font-weight: 900;
+    font-size: 16px;
+    color: #1a1208;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .phone-light .ph-date { font-size: 11px; color: #9b8060; }
+  .phone-light .ph-filter {
+    background: #1a1208;
+    color: #f5f0e8;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .phone-light .ph-body { padding: 12px; }
+  .phone-light .ph-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: #9b8060;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .phone-light .live-dot {
+    width: 6px; height: 6px;
+    background: #dc2626;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .phone-light .ph-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+  .phone-light .ph-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .phone-light .ph-card-league { font-size: 8px; color: #9b8060; margin-bottom: 4px; text-transform: uppercase; }
+  .phone-light .ph-card-teams { font-size: 11px; font-weight: 600; color: #1a1208; line-height: 1.4; margin-bottom: 6px; }
+  .phone-light .ph-card-score-row { display: flex; justify-content: space-between; align-items: center; }
+  .phone-light .ph-card-score { font-size: 15px; font-weight: 800; color: #1a1208; }
+  .phone-light .badge-live { background: #dc2626; color: #fff; font-size: 8px; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+  .phone-light .badge-ft { color: #9b8060; font-size: 8px; border: 1px solid #e0d8cc; padding: 2px 5px; border-radius: 4px; }
+  .phone-light .badge-pre { color: #9b8060; font-size: 8px; }
+
+  /* Spoiler card */
+  .phone-light .ph-spoiler {
+    margin-bottom: 12px;
+    background: #1a1208;
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .phone-light .ph-spoiler-text { font-size: 10px; color: #f5f0e8; font-weight: 600; }
+  .phone-light .ph-spoiler-sub { font-size: 8px; color: #9b8060; margin-top: 1px; }
+  .phone-light .ph-spoiler-toggle {
+    width: 28px; height: 16px;
+    background: #3a9a5c;
+    border-radius: 8px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .phone-light .ph-spoiler-toggle::after {
+    content: '';
+    position: absolute;
+    right: 2px; top: 2px;
+    width: 12px; height: 12px;
+    background: #fff;
+    border-radius: 50%;
+  }
+
+  /* Bottom sheet -->  */
+  .phone-light .ph-sheet {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: #fff;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 14px;
+    box-shadow: 0 -6px 30px rgba(0,0,0,0.15);
+  }
+  .phone-light .ph-sheet-handle {
+    width: 32px; height: 3px;
+    background: #e0d8cc;
+    border-radius: 2px;
+    margin: 0 auto 10px;
+  }
+  .phone-light .ph-sheet-label { font-size: 9px; font-weight: 700; color: #9b8060; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .phone-light .ph-sport-grid { display: flex; gap: 6px; margin-bottom: 12px; }
+  .phone-light .ph-sport-btn {
+    flex: 1;
+    background: #f5f0e8;
+    border-radius: 10px;
+    padding: 7px 4px;
+    text-align: center;
+    border: 2px solid transparent;
+  }
+  .phone-light .ph-sport-btn.active { border-color: #1a1208; }
+  .phone-light .ph-sport-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .phone-light .ph-sport-name { font-size: 8px; color: #1a1208; font-weight: 600; }
+  .phone-light .ph-sport-btn:not(.active) .ph-sport-name { color: #9b8060; }
+  .phone-light .ph-league-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid #f0ebe0;
+    font-size: 11px;
+    color: #1a1208;
+    font-weight: 500;
+  }
+  .phone-light .ph-check {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #1a1208;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .phone-light .ph-check.off {
+    background: transparent;
+    border: 1.5px solid #e0d8cc;
+  }
+
+  /* ── DARK PHONE ── */
+  .phone-dark .phone-shell {
+    background: #0d0a08;
+    border-radius: 32px;
+    border: 6px solid #2a2420;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  }
+  .phone-dark .ph {
+    background: #0d0a08;
+    min-height: 580px;
+    position: relative;
+  }
+  .phone-dark .ph-header {
+    background: rgba(13,10,8,0.95);
+    padding: 16px 14px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(237,201,81,0.1);
+  }
+  .phone-dark .ph-logo { font-weight: 900; font-size: 16px; color: #edc951; display: flex; align-items: center; gap: 5px; }
+  .phone-dark .ph-date { font-size: 11px; color: #6b5040; }
+  .phone-dark .ph-filter {
+    background: rgba(237,201,81,0.12);
+    color: #edc951;
+    font-size: 10px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    border: 1px solid rgba(237,201,81,0.2);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .phone-dark .ph-body { padding: 12px; }
+  .phone-dark .ph-section-label {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
+    color: #6b5040; text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .phone-dark .live-dot { width: 6px; height: 6px; background: #cc2a36; border-radius: 50%; display: inline-block; }
+  .phone-dark .ph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
+  .phone-dark .ph-card {
+    background: rgba(79,55,45,0.18);
+    border: 1px solid rgba(237,201,81,0.1);
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .phone-dark .ph-card-league { font-size: 8px; color: #6b5040; margin-bottom: 4px; text-transform: uppercase; }
+  .phone-dark .ph-card-teams { font-size: 11px; font-weight: 600; color: #f5f0e8; line-height: 1.4; margin-bottom: 6px; }
+  .phone-dark .ph-card-score-row { display: flex; justify-content: space-between; align-items: center; }
+  .phone-dark .ph-card-score { font-size: 15px; font-weight: 800; color: #f5f0e8; }
+  .phone-dark .badge-live { background: #cc2a36; color: #fff; font-size: 8px; padding: 2px 5px; border-radius: 4px; font-weight: 700; }
+  .phone-dark .badge-ft { color: #6b5040; font-size: 8px; border: 1px solid #3a2a20; padding: 2px 5px; border-radius: 4px; }
+
+  /* Spoiler dark */
+  .phone-dark .ph-spoiler {
+    margin-bottom: 12px;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid rgba(37,99,235,0.3);
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .phone-dark .ph-spoiler-text { font-size: 10px; color: #93bbfd; font-weight: 600; }
+  .phone-dark .ph-spoiler-sub { font-size: 8px; color: #6b5040; margin-top: 1px; }
+  .phone-dark .ph-spoiler-toggle { width: 28px; height: 16px; background: #2563eb; border-radius: 8px; position: relative; flex-shrink: 0; }
+  .phone-dark .ph-spoiler-toggle::after { content: ''; position: absolute; right: 2px; top: 2px; width: 12px; height: 12px; background: #fff; border-radius: 50%; }
+
+  /* Bottom sheet dark */
+  .phone-dark .ph-sheet {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: #1a1410;
+    border-radius: 20px 20px 0 0;
+    padding: 12px 14px;
+    box-shadow: 0 -6px 30px rgba(0,0,0,0.4);
+    border-top: 1px solid rgba(237,201,81,0.1);
+  }
+  .phone-dark .ph-sheet-handle { width: 32px; height: 3px; background: #3a2a20; border-radius: 2px; margin: 0 auto 10px; }
+  .phone-dark .ph-sheet-label { font-size: 9px; font-weight: 700; color: #6b5040; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .phone-dark .ph-sport-grid { display: flex; gap: 6px; margin-bottom: 12px; }
+  .phone-dark .ph-sport-btn { flex: 1; background: rgba(79,55,45,0.2); border-radius: 10px; padding: 7px 4px; text-align: center; border: 1px solid rgba(237,201,81,0.08); }
+  .phone-dark .ph-sport-btn.active { border-color: rgba(237,201,81,0.4); background: rgba(237,201,81,0.08); }
+  .phone-dark .ph-sport-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+  .phone-dark .ph-sport-name { font-size: 8px; color: #edc951; font-weight: 600; }
+  .phone-dark .ph-sport-btn:not(.active) .ph-sport-name { color: #6b5040; }
+  .phone-dark .ph-league-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(237,201,81,0.06); font-size: 11px; color: #f5f0e8; font-weight: 500; }
+  .phone-dark .ph-check { width: 16px; height: 16px; border-radius: 50%; background: #edc951; display: flex; align-items: center; justify-content: center; font-size: 9px; color: #1a1208; flex-shrink: 0; font-weight: 800; }
+  .phone-dark .ph-check.off { background: transparent; border: 1.5px solid #3a2a20; }
+
+  /* ── Summary table ── */
+  .summary {
+    max-width: 640px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .summary-row {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 13px;
+    gap: 16px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-key { color: #7a6a5a; width: 160px; flex-shrink: 0; font-size: 12px; }
+  .summary-val { color: #f0ebe0; }
+  .tag {
+    display: inline-block;
+    background: rgba(237,201,81,0.15);
+    color: #edc951;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<h2>Matchboard — v1 Redesign</h2>
+<p class="subtitle">System light/dark · Filter bottom sheet · 2-column card grid · Spoiler toggle preserved</p>
+
+<div class="section-label">Main view (scores showing)</div>
+<div class="phones">
+
+  <!-- LIGHT: Main view -->
+  <div class="phone phone-light">
+    <div class="phone-label">☀️ Light mode</div>
+    <div class="phone-shell">
+      <div class="ph">
+        <div class="ph-header">
+          <div class="ph-logo">⚡ Matchboard</div>
+          <div class="ph-date">Sun, Mar 15</div>
+          <div class="ph-filter">Filter ⊞</div>
+        </div>
+        <div class="ph-body">
+          <!-- Spoiler card: OFF state (scores showing) -->
+          <div class="ph-spoiler" style="background:#fffbe6;border:1px solid #f0c000;">
+            <div>
+              <div class="ph-spoiler-text" style="color:#92660a;">Spoiler Alert — Scores Showing</div>
+              <div class="ph-spoiler-sub">Tap to hide scores</div>
+            </div>
+            <div class="ph-spoiler-toggle" style="background:#e0d8cc;">
+              <div style="position:absolute;left:2px;top:2px;width:12px;height:12px;background:#fff;border-radius:50%;"></div>
+            </div>
+          </div>
+
+          <div class="ph-section-label"><span class="live-dot"></span> Live</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">Premier League</div>
+              <div class="ph-card-teams">Liverpool<br>Tottenham</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score">1–1</span>
+                <span class="badge-live">67'</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">Bundesliga</div>
+              <div class="ph-card-teams">Stuttgart<br>RB Leipzig</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score">?–?</span>
+                <span class="badge-live">50'</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph-section-label">Results</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">La Liga</div>
+              <div class="ph-card-teams">Barcelona<br>Sevilla</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score">5–2</span>
+                <span class="badge-ft">FT</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">UCL</div>
+              <div class="ph-card-teams">Man City<br>Real Madrid</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score">2–1</span>
+                <span class="badge-ft">FT</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph-section-label">Upcoming</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">Serie A</div>
+              <div class="ph-card-teams">Inter<br>Juventus</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="font-size:11px;color:#9b8060;">20:45</span>
+                <span class="badge-pre">–</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">Ligue 1</div>
+              <div class="ph-card-teams">PSG<br>Marseille</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="font-size:11px;color:#9b8060;">21:00</span>
+                <span class="badge-pre">–</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK: Main view -->
+  <div class="phone phone-dark">
+    <div class="phone-label">🌙 Dark mode</div>
+    <div class="phone-shell">
+      <div class="ph">
+        <div class="ph-header">
+          <div class="ph-logo">⚡ Matchboard</div>
+          <div class="ph-date">Sun, Mar 15</div>
+          <div class="ph-filter">Filter ⊞</div>
+        </div>
+        <div class="ph-body">
+          <!-- Spoiler card: ON state (spoilers hidden) -->
+          <div class="ph-spoiler">
+            <div>
+              <div class="ph-spoiler-text">Spoilers Off — Scores Hidden</div>
+              <div class="ph-spoiler-sub">Tap to show scores</div>
+            </div>
+            <div class="ph-spoiler-toggle"></div>
+          </div>
+
+          <div class="ph-section-label"><span class="live-dot"></span> Live</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">Premier League</div>
+              <div class="ph-card-teams">Liverpool<br>Tottenham</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="filter:blur(5px);user-select:none;">1–1</span>
+                <span class="badge-live">67'</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">Bundesliga</div>
+              <div class="ph-card-teams">Stuttgart<br>RB Leipzig</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="filter:blur(5px);user-select:none;">?–?</span>
+                <span class="badge-live">50'</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph-section-label">Results</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">La Liga</div>
+              <div class="ph-card-teams">Barcelona<br>Sevilla</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="filter:blur(5px);user-select:none;">5–2</span>
+                <span class="badge-ft">FT</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">UCL</div>
+              <div class="ph-card-teams">Man City<br>Real Madrid</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="filter:blur(5px);user-select:none;">2–1</span>
+                <span class="badge-ft">FT</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ph-section-label">Upcoming</div>
+          <div class="ph-grid">
+            <div class="ph-card">
+              <div class="ph-card-league">Serie A</div>
+              <div class="ph-card-teams">Inter<br>Juventus</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="font-size:11px;color:#6b5040;">20:45</span>
+              </div>
+            </div>
+            <div class="ph-card">
+              <div class="ph-card-league">Ligue 1</div>
+              <div class="ph-card-teams">PSG<br>Marseille</div>
+              <div class="ph-card-score-row">
+                <span class="ph-card-score" style="font-size:11px;color:#6b5040;">21:00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-label">Filter bottom sheet (open)</div>
+<div class="phones">
+
+  <!-- LIGHT: Sheet open -->
+  <div class="phone phone-light">
+    <div class="phone-label">☀️ Sheet open</div>
+    <div class="phone-shell">
+      <div class="ph" style="min-height:420px;">
+        <div class="ph-header">
+          <div class="ph-logo">⚡ Matchboard</div>
+          <div class="ph-date">Sun, Mar 15</div>
+          <div class="ph-filter">Filter ⊞</div>
+        </div>
+        <div class="ph-body" style="filter:brightness(0.85);pointer-events:none;">
+          <div class="ph-grid">
+            <div class="ph-card"><div class="ph-card-league">Premier League</div><div class="ph-card-teams">Liverpool<br>Tottenham</div></div>
+            <div class="ph-card"><div class="ph-card-league">La Liga</div><div class="ph-card-teams">Barcelona<br>Sevilla</div></div>
+          </div>
+        </div>
+        <div class="ph-sheet">
+          <div class="ph-sheet-handle"></div>
+          <div class="ph-sheet-label">Sports</div>
+          <div class="ph-sport-grid">
+            <div class="ph-sport-btn active"><span class="ph-sport-icon">⚽</span><span class="ph-sport-name">Football</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🏀</span><span class="ph-sport-name">NBA</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🎾</span><span class="ph-sport-name">Tennis</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🏎</span><span class="ph-sport-name">F1</span></div>
+          </div>
+          <div class="ph-sheet-label">Football leagues</div>
+          <div class="ph-league-row"><span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span><span class="ph-check">✓</span></div>
+          <div class="ph-league-row"><span>🇪🇸 La Liga</span><span class="ph-check">✓</span></div>
+          <div class="ph-league-row"><span>🇩🇪 Bundesliga</span><span class="ph-check off"></span></div>
+          <div class="ph-league-row" style="border-bottom:none;"><span>⭐ Champions League</span><span class="ph-check">✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DARK: Sheet open -->
+  <div class="phone phone-dark">
+    <div class="phone-label">🌙 Sheet open</div>
+    <div class="phone-shell">
+      <div class="ph" style="min-height:420px;">
+        <div class="ph-header">
+          <div class="ph-logo">⚡ Matchboard</div>
+          <div class="ph-date">Sun, Mar 15</div>
+          <div class="ph-filter">Filter ⊞</div>
+        </div>
+        <div class="ph-body" style="filter:brightness(0.5);pointer-events:none;">
+          <div class="ph-grid">
+            <div class="ph-card"><div class="ph-card-league">Premier League</div><div class="ph-card-teams">Liverpool<br>Tottenham</div></div>
+            <div class="ph-card"><div class="ph-card-league">La Liga</div><div class="ph-card-teams">Barcelona<br>Sevilla</div></div>
+          </div>
+        </div>
+        <div class="ph-sheet">
+          <div class="ph-sheet-handle"></div>
+          <div class="ph-sheet-label">Sports</div>
+          <div class="ph-sport-grid">
+            <div class="ph-sport-btn active"><span class="ph-sport-icon">⚽</span><span class="ph-sport-name">Football</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🏀</span><span class="ph-sport-name">NBA</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🎾</span><span class="ph-sport-name">Tennis</span></div>
+            <div class="ph-sport-btn"><span class="ph-sport-icon">🏎</span><span class="ph-sport-name">F1</span></div>
+          </div>
+          <div class="ph-sheet-label">Football leagues</div>
+          <div class="ph-league-row"><span>🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span><span class="ph-check">✓</span></div>
+          <div class="ph-league-row"><span>🇪🇸 La Liga</span><span class="ph-check">✓</span></div>
+          <div class="ph-league-row"><span>🇩🇪 Bundesliga</span><span class="ph-check off"></span></div>
+          <div class="ph-league-row" style="border-bottom:none;"><span>⭐ Champions League</span><span class="ph-check">✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="section-label">Design decisions</div>
+<div class="summary">
+  <div class="summary-row"><span class="summary-key">Themes</span><span class="summary-val">Light (#f5f0e8 bg / white cards) + Dark (#0d0a08) — auto-switches with <code>prefers-color-scheme</code></span></div>
+  <div class="summary-row"><span class="summary-key">Sport &amp; league nav</span><span class="summary-val">Removed from sticky header. "Filter ⊞" button opens a bottom sheet: sport icon grid on top, league checkbox list below</span></div>
+  <div class="summary-row"><span class="summary-key">Match cards</span><span class="summary-val">2-column grid. Live → Results → Upcoming sections. Cards show: league, both team names stacked, score, status badge</span></div>
+  <div class="summary-row"><span class="summary-key">Spoiler toggle</span><span class="summary-val">Kept as full-width card between header and grid. Amber when scores showing, blue when hidden. Scores blur rather than disappear</span></div>
+  <div class="summary-row"><span class="summary-key">Date nav</span><span class="summary-val">Moved into header row (compact ‹ Mar 15 ›) — saves vertical space</span></div>
+  <div class="summary-row"><span class="summary-key">What stays the same</span><span class="summary-val">All data fetching, API logic, standings/team pages, tennis/F1 views — no backend changes</span></div>
+</div>
+
+</body>
+</html>

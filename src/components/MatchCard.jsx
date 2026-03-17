@@ -36,7 +36,7 @@ function TeamLogo({ logo, shortName, size = 24, onClick }) {
   return img
 }
 
-function StatusBadge({ state, name, detail, displayClock, period, sport }) {
+function StatusBadge({ state, name, detail, displayClock, period, sport, date }) {
   if (state === 'in') {
     let label
     if (sport === 'basketball') {
@@ -54,12 +54,16 @@ function StatusBadge({ state, name, detail, displayClock, period, sport }) {
     if (name === 'STATUS_CANCELLED') return <span className="status-badge finished">CANC</span>
     return <span className="status-badge finished">{detail || 'FT'}</span>
   }
+  if (state === 'pre' && date) {
+    return <span className="status-badge upcoming">{formatKickoff(date)}</span>
+  }
   return null
 }
 
 export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
   const league = getLeague(match.leagueId)
-  const hasScore = match.statusState !== 'pre' && match.home.score != null && match.away.score != null
+  const isPre = match.statusState === 'pre'
+  const hasScore = !isPre && match.home.score != null && match.away.score != null
   const [revealed, setRevealed] = useState(false)
   const lastTapRef = useRef(0)
 
@@ -74,16 +78,20 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
     }
   }
 
+  const stateClass = match.statusState === 'in' ? 'match-card--live'
+    : match.statusState === 'pre' ? 'match-card--upcoming'
+    : 'match-card--finished'
+
   return (
     <div
-      className="match-card"
+      className={`match-card ${stateClass}`}
       style={{
         '--league-color': league?.primaryColor,
         '--league-accent': league?.accentColor,
       }}
       onClick={onClick}
     >
-      {/* Header: league + time */}
+      {/* Header: league badge (left) + status badge (right) */}
       <div className="match-card-header">
         {league && league.id !== 'all' && (
           <span className="match-league-badge">{league.flag} {league.shortName}</span>
@@ -91,7 +99,17 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
         {match.legLabel && (
           <span className="leg-badge">{match.legLabel}</span>
         )}
-        <span className="match-time" style={{ marginLeft: 'auto' }}>{formatKickoff(match.date)}</span>
+        <span className="match-status-badge-wrap">
+          <StatusBadge
+            state={match.statusState}
+            name={match.statusName}
+            detail={match.statusDetail}
+            displayClock={match.displayClock}
+            period={match.period}
+            sport={match.sport}
+            date={match.date}
+          />
+        </span>
       </div>
 
       {/* Teams stacked */}
@@ -103,7 +121,8 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
             size={24}
             onClick={onTeamClick ? () => onTeamClick(match.home) : null}
           />
-          <span className="team-name">{match.home.shortName || match.home.name}</span>
+          <span className="team-name">{match.home.name}</span>
+          {isPre && <span className="team-score-dash">—</span>}
         </div>
         <div className="match-team-row">
           <TeamLogo
@@ -112,46 +131,41 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers }) {
             size={24}
             onClick={onTeamClick ? () => onTeamClick(match.away) : null}
           />
-          <span className="team-name">{match.away.shortName || match.away.name}</span>
+          <span className="team-name">{match.away.name}</span>
+          {isPre && <span className="team-score-dash">—</span>}
         </div>
       </div>
 
-      {/* Score row */}
-      <div className="match-score-row">
-        <div
-          className="match-score-wrap"
-          onClick={noSpoilers && hasScore ? handleScoreTap : undefined}
-          style={noSpoilers && hasScore && !revealed ? { cursor: 'pointer' } : undefined}
-        >
-          <div className="match-score">
-            {hasScore ? (
-              <>
-                <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.home.score}</span>
-                <span className={`score-sep${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>&ndash;</span>
-                <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.away.score}</span>
-              </>
-            ) : (
-              <span className="score-vs">vs</span>
+      {/* Score row: only for live/finished matches */}
+      {!isPre && (
+        <div className="match-score-row">
+          <div
+            className="match-score-wrap"
+            onClick={noSpoilers && hasScore ? handleScoreTap : undefined}
+            style={noSpoilers && hasScore && !revealed ? { cursor: 'pointer' } : undefined}
+          >
+            <div className="match-score">
+              {hasScore ? (
+                <>
+                  <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.home.score}</span>
+                  <span className={`score-sep${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>&ndash;</span>
+                  <span className={`score-number${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>{match.away.score}</span>
+                </>
+              ) : (
+                <span className="score-vs">vs</span>
+              )}
+            </div>
+            {noSpoilers && hasScore && !revealed && (
+              <span className="score-reveal-hint">double tap</span>
+            )}
+            {match.leg === 2 && match.aggregate && (
+              <span className="agg-score">
+                Agg: {match.aggregate.home}–{match.aggregate.away}
+              </span>
             )}
           </div>
-          {noSpoilers && hasScore && !revealed && (
-            <span className="score-reveal-hint">double tap</span>
-          )}
-          {match.leg === 2 && match.aggregate && (
-            <span className="agg-score">
-              Agg: {match.aggregate.home}–{match.aggregate.away}
-            </span>
-          )}
         </div>
-        <StatusBadge
-          state={match.statusState}
-          name={match.statusName}
-          detail={match.statusDetail}
-          displayClock={match.displayClock}
-          period={match.period}
-          sport={match.sport}
-        />
-      </div>
+      )}
     </div>
   )
 }

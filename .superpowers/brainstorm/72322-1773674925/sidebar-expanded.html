@@ -1,0 +1,288 @@
+<h2>Desktop sidebar — expanded with sub-menus</h2>
+<p class="subtitle">Clicking a sport expands it to show leagues inline. Two width options.</p>
+
+<style>
+  .frame {
+    background: #0d0a08;
+    border-radius: 10px;
+    border: 1px solid rgba(237,201,81,0.12);
+    overflow: hidden;
+    height: 380px;
+    display: flex;
+    flex-direction: column;
+  }
+  .d-header {
+    background: #140f0c;
+    border-bottom: 1px solid rgba(237,201,81,0.1);
+    padding: 9px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    height: 44px;
+  }
+  .d-logo { font-size: 14px; font-weight: 800; color: #edc951; }
+  .d-datenav {
+    display: flex; gap: 6px; align-items: center;
+    font-size: 10px; color: #b09070;
+    margin-left: auto;
+  }
+  .d-datenav-btn {
+    background: rgba(79,55,45,0.3);
+    border-radius: 6px;
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: #b09070;
+  }
+  .d-body { display: flex; flex: 1; overflow: hidden; }
+  .d-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 8px;
+    align-content: start;
+    overflow: hidden;
+  }
+  .d-card {
+    background: rgba(79,55,45,0.15);
+    border-radius: 8px;
+    height: 64px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: #110d0a;
+    border-right: 1px solid rgba(237,201,81,0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 8px 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+
+  .sport-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 0;
+    position: relative;
+  }
+  .sport-row:hover { background: rgba(79,55,45,0.15); }
+  .sport-row.active { background: rgba(237,201,81,0.08); }
+  .sport-row.active .sport-name { color: #edc951; font-weight: 700; }
+  .sport-icon { font-size: 17px; flex-shrink: 0; }
+  .sport-name { font-size: 12px; color: #b09070; font-weight: 500; flex: 1; }
+  .sport-row.active .sport-name { color: #edc951; }
+  .chevron { font-size: 9px; color: #4a3828; transition: transform 0.15s; }
+  .sport-row.active .chevron { transform: rotate(90deg); color: #edc951; }
+
+  /* Sub-leagues */
+  .sub-leagues {
+    padding: 2px 0 4px;
+  }
+  .sub-league {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 32px;
+    font-size: 11px;
+    color: #6b5040;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .sub-league:hover { color: #b09070; background: rgba(79,55,45,0.1); }
+  .sub-league.active { color: #edc951; background: rgba(237,201,81,0.07); }
+  .sub-league.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px; height: 16px;
+    background: #edc951;
+    border-radius: 0 2px 2px 0;
+  }
+  .sub-flag { font-size: 11px; }
+
+  .divider { height: 1px; background: rgba(237,201,81,0.07); margin: 4px 0; }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding-top: 4px;
+    border-top: 1px solid rgba(237,201,81,0.07);
+  }
+</style>
+
+<div class="split" style="gap: 24px; align-items: flex-start;">
+
+  <!-- Left: Narrow sidebar (160px) - collapsed states -->
+  <div class="mockup" style="flex: 1;">
+    <div class="mockup-header">Option A1 — 160px sidebar, Football collapsed</div>
+    <div class="mockup-body" style="padding: 0;">
+      <div class="frame">
+        <div class="d-header">
+          <span class="d-logo">⚡ Matchboard</span>
+          <div class="d-datenav">
+            <div class="d-datenav-btn">‹</div>
+            <span style="font-size:10px;">Mar 16</span>
+            <div class="d-datenav-btn">›</div>
+          </div>
+        </div>
+        <div class="d-body">
+          <div class="sidebar" style="width: 160px;">
+            <div class="sport-row">
+              <span class="sport-icon">⚽</span>
+              <span class="sport-name">Football</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sport-row">
+              <span class="sport-icon">🏀</span>
+              <span class="sport-name">NBA</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sport-row">
+              <span class="sport-icon">🎾</span>
+              <span class="sport-name">Tennis</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sport-row">
+              <span class="sport-icon">🏁</span>
+              <span class="sport-name">F1</span>
+            </div>
+            <div class="sidebar-footer">
+              <div class="sport-row">
+                <span class="sport-icon" style="font-size:13px;">···</span>
+                <span class="sport-name">More</span>
+                <span class="chevron">›</span>
+              </div>
+            </div>
+          </div>
+          <div class="d-content">
+            <div class="d-card"></div><div class="d-card"></div>
+            <div class="d-card"></div><div class="d-card"></div>
+            <div class="d-card"></div><div class="d-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Football expanded -->
+  <div class="mockup" style="flex: 1;">
+    <div class="mockup-header">Option A1 — Football expanded showing leagues</div>
+    <div class="mockup-body" style="padding: 0;">
+      <div class="frame">
+        <div class="d-header">
+          <span class="d-logo">⚡ Matchboard</span>
+          <div class="d-datenav">
+            <div class="d-datenav-btn">‹</div>
+            <span style="font-size:10px;">Mar 16</span>
+            <div class="d-datenav-btn">›</div>
+          </div>
+        </div>
+        <div class="d-body">
+          <div class="sidebar" style="width: 160px;">
+            <div class="sport-row active">
+              <span class="sport-icon">⚽</span>
+              <span class="sport-name">Football</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sub-leagues">
+              <div class="sub-league active" style="position:relative;">
+                <span class="sub-flag">🌍</span> All
+              </div>
+              <div class="sub-league"><span class="sub-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Premier League</div>
+              <div class="sub-league"><span class="sub-flag">🇪🇸</span> La Liga</div>
+              <div class="sub-league"><span class="sub-flag">🇩🇪</span> Bundesliga</div>
+              <div class="sub-league"><span class="sub-flag">🇫🇷</span> Ligue 1</div>
+              <div class="sub-league"><span class="sub-flag">🇮🇹</span> Serie A</div>
+              <div class="sub-league"><span class="sub-flag">⭐</span> Champions Lg</div>
+              <div class="sub-league"><span class="sub-flag">🟠</span> Europa Lg</div>
+            </div>
+            <div class="divider"></div>
+            <div class="sport-row">
+              <span class="sport-icon">🏀</span>
+              <span class="sport-name">NBA</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sport-row">
+              <span class="sport-icon">🎾</span>
+              <span class="sport-name">Tennis</span>
+              <span class="chevron">›</span>
+            </div>
+            <div class="sport-row">
+              <span class="sport-icon">🏁</span>
+              <span class="sport-name">F1</span>
+            </div>
+          </div>
+          <div class="d-content">
+            <div class="d-card"></div><div class="d-card"></div>
+            <div class="d-card"></div><div class="d-card"></div>
+            <div class="d-card"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 24px;">
+<h3 style="margin-bottom: 8px;">Wider variant — 220px</h3>
+<p class="subtitle" style="margin-bottom: 12px;">More breathing room, full league names fit without truncation</p>
+<div class="frame" style="max-width: 600px; margin: 0 auto;">
+  <div class="d-header">
+    <span class="d-logo">⚡ Matchboard</span>
+    <div class="d-datenav">
+      <div class="d-datenav-btn">‹</div>
+      <span style="font-size:10px;">Mar 16</span>
+      <div class="d-datenav-btn">›</div>
+    </div>
+  </div>
+  <div class="d-body">
+    <div class="sidebar" style="width: 220px;">
+      <div class="sport-row active">
+        <span class="sport-icon">⚽</span>
+        <span class="sport-name" style="font-size:13px;">Football</span>
+        <span class="chevron">›</span>
+      </div>
+      <div class="sub-leagues">
+        <div class="sub-league active" style="position:relative; font-size:12px;">
+          <span class="sub-flag">🌍</span> All Leagues
+        </div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span> Premier League</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🇪🇸</span> La Liga</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🇩🇪</span> Bundesliga</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🇮🇹</span> Serie A</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">⭐</span> Champions League</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🟠</span> Europa League</div>
+        <div class="sub-league" style="font-size:12px;"><span class="sub-flag">🟢</span> Conference League</div>
+      </div>
+      <div class="divider"></div>
+      <div class="sport-row">
+        <span class="sport-icon">🏀</span>
+        <span class="sport-name" style="font-size:13px;">NBA</span>
+      </div>
+      <div class="sport-row">
+        <span class="sport-icon">🎾</span>
+        <span class="sport-name" style="font-size:13px;">Tennis</span>
+        <span class="chevron">›</span>
+      </div>
+      <div class="sport-row">
+        <span class="sport-icon">🏁</span>
+        <span class="sport-name" style="font-size:13px;">F1</span>
+      </div>
+    </div>
+    <div class="d-content">
+      <div class="d-card"></div><div class="d-card"></div>
+      <div class="d-card"></div><div class="d-card"></div>
+      <div class="d-card"></div><div class="d-card"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div style="margin-top: 20px; padding: 14px; background: rgba(237,201,81,0.06); border-radius: 8px; border: 1px solid rgba(237,201,81,0.12);">
+  <p class="subtitle" style="margin:0;"><strong style="color:#b09070;">Note:</strong> On mobile, the sidebar disappears entirely — replaced by the bottom tab bar + bottom sheet (Option A from the first question).</p>
+</div>

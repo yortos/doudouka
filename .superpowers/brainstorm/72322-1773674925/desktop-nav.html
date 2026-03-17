@@ -1,0 +1,258 @@
+<h2>Desktop navigation layout</h2>
+<p class="subtitle">On desktop the current bottom bar feels too thin. How should it adapt?</p>
+
+<style>
+  /* Shared */
+  .desktop-frame {
+    background: #0d0a08;
+    border-radius: 10px;
+    border: 1px solid rgba(237,201,81,0.12);
+    overflow: hidden;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    font-size: 11px;
+  }
+  .d-header {
+    background: #140f0c;
+    border-bottom: 1px solid rgba(237,201,81,0.1);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .d-logo { font-size: 13px; font-weight: 800; color: #edc951; }
+  .d-date { font-size: 10px; color: #6b5040; margin-left: auto; }
+  .d-datenav {
+    display: flex; gap: 6px; align-items: center;
+    font-size: 10px; color: #b09070;
+    margin-left: auto;
+  }
+  .d-datenav-btn {
+    background: rgba(79,55,45,0.3);
+    border-radius: 6px;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; color: #b09070;
+  }
+  .d-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: 8px;
+    overflow: hidden;
+  }
+  .d-card {
+    background: rgba(79,55,45,0.15);
+    border-radius: 8px;
+    height: 60px;
+  }
+
+  /* Option A: Sidebar */
+  .sidebar-layout { display: flex; flex: 1; overflow: hidden; }
+  .sidebar {
+    width: 60px;
+    background: #110d0a;
+    border-right: 1px solid rgba(237,201,81,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .sidebar-item {
+    width: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 7px 4px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .sidebar-item.active { background: rgba(237,201,81,0.12); }
+  .sidebar-icon { font-size: 18px; }
+  .sidebar-label { font-size: 7px; color: #6b5040; }
+  .sidebar-item.active .sidebar-label { color: #edc951; }
+  .sidebar-content { flex: 1; overflow: hidden; }
+
+  /* Option B: Bigger bottom bar */
+  .big-bottom-nav {
+    background: #110d0a;
+    border-top: 1px solid rgba(237,201,81,0.12);
+    display: flex;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .big-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 4px 10px;
+    position: relative;
+    cursor: pointer;
+  }
+  .big-tab.active::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 36px; height: 3px;
+    background: #edc951;
+    border-radius: 0 0 3px 3px;
+  }
+  .big-tab-icon { font-size: 24px; line-height: 1; }
+  .big-tab-label { font-size: 10px; color: #6b5040; font-weight: 500; }
+  .big-tab.active .big-tab-label { color: #edc951; font-weight: 700; }
+
+  /* Option C: Top pill tabs on desktop */
+  .top-tab-bar {
+    background: #140f0c;
+    border-bottom: 1px solid rgba(237,201,81,0.1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 16px;
+    flex-shrink: 0;
+  }
+  .top-tab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b5040;
+  }
+  .top-tab.active {
+    background: rgba(237,201,81,0.12);
+    color: #edc951;
+    font-weight: 700;
+  }
+  .top-tab-icon { font-size: 15px; }
+</style>
+
+<div class="options">
+
+  <!-- Option A: Left Sidebar on desktop -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Left Sidebar</h3>
+      <p>On desktop, the nav shifts to a compact left sidebar with icon + label. Mobile keeps the bottom bar. Most native to desktop apps.</p>
+      <div class="desktop-frame" style="margin-top:12px;">
+        <div class="d-header">
+          <span class="d-logo">⚡ Matchboard</span>
+          <div class="d-datenav">
+            <div class="d-datenav-btn">‹</div>
+            <span>Mar 16</span>
+            <div class="d-datenav-btn">›</div>
+          </div>
+        </div>
+        <div class="sidebar-layout">
+          <div class="sidebar">
+            <div class="sidebar-item active">
+              <span class="sidebar-icon">⚽</span>
+              <span class="sidebar-label" style="color:#edc951;">Football</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-icon">🏀</span>
+              <span class="sidebar-label">NBA</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-icon">🎾</span>
+              <span class="sidebar-label">Tennis</span>
+            </div>
+            <div class="sidebar-item">
+              <span class="sidebar-icon">🏁</span>
+              <span class="sidebar-label">F1</span>
+            </div>
+            <div class="sidebar-item" style="margin-top:auto;">
+              <span class="sidebar-icon" style="font-size:14px;">···</span>
+              <span class="sidebar-label">More</span>
+            </div>
+          </div>
+          <div class="sidebar-content">
+            <div class="d-content">
+              <div class="d-card"></div><div class="d-card"></div><div class="d-card"></div>
+              <div class="d-card"></div><div class="d-card"></div><div class="d-card"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: Bigger bottom bar on all sizes -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Taller Bottom Bar</h3>
+      <p>Same bottom bar on all sizes, but significantly taller with bigger icons (28px), bigger labels, and wider padding. More presence on desktop without layout change.</p>
+      <div class="desktop-frame" style="margin-top:12px;">
+        <div class="d-header">
+          <span class="d-logo">⚡ Matchboard</span>
+          <div class="d-datenav">
+            <div class="d-datenav-btn">‹</div>
+            <span>Mar 16</span>
+            <div class="d-datenav-btn">›</div>
+          </div>
+        </div>
+        <div class="d-content">
+          <div class="d-card"></div><div class="d-card"></div><div class="d-card"></div>
+          <div class="d-card"></div><div class="d-card"></div>
+        </div>
+        <div class="big-bottom-nav">
+          <div class="big-tab active">
+            <span class="big-tab-icon">⚽</span>
+            <span class="big-tab-label" style="color:#edc951;">Football</span>
+          </div>
+          <div class="big-tab"><span class="big-tab-icon">🏀</span><span class="big-tab-label">NBA</span></div>
+          <div class="big-tab"><span class="big-tab-icon">🎾</span><span class="big-tab-label">Tennis</span></div>
+          <div class="big-tab"><span class="big-tab-icon">🏁</span><span class="big-tab-label">F1</span></div>
+          <div class="big-tab"><span class="big-tab-icon" style="font-size:16px;">···</span><span class="big-tab-label">More</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C: Top pill tabs on desktop, bottom bar on mobile -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Top Tab Row on Desktop</h3>
+      <p>On desktop (≥768px), the sport nav moves under the header as a horizontal tab row. On mobile, stays at the bottom. Feels most web-native on desktop.</p>
+      <div class="desktop-frame" style="margin-top:12px;">
+        <div class="d-header">
+          <span class="d-logo">⚡ Matchboard</span>
+          <div class="d-datenav">
+            <div class="d-datenav-btn">‹</div>
+            <span>Mar 16</span>
+            <div class="d-datenav-btn">›</div>
+          </div>
+        </div>
+        <div class="top-tab-bar">
+          <div class="top-tab active">
+            <span class="top-tab-icon">⚽</span> Football
+          </div>
+          <div class="top-tab"><span class="top-tab-icon">🏀</span> NBA</div>
+          <div class="top-tab"><span class="top-tab-icon">🎾</span> Tennis</div>
+          <div class="top-tab"><span class="top-tab-icon">🏁</span> F1</div>
+          <div class="top-tab"><span class="top-tab-icon">···</span> More</div>
+        </div>
+        <div class="d-content">
+          <div class="d-card"></div><div class="d-card"></div><div class="d-card"></div>
+          <div class="d-card"></div><div class="d-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

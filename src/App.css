@@ -44,6 +44,12 @@
 
   --bg-nav-hover:   rgba(79, 55, 45, 0.15);
   --bg-nav-active:  rgba(237, 201, 81, 0.08);
+
+  /* Upcoming state */
+  --upcoming:      #3b82f6;
+  --upcoming-bg:   rgba(59, 130, 246, 0.12);
+  --upcoming-glow: rgba(59, 130, 246, 0.25);
+  --upcoming-text: #60a5fa;
 }
 
 @media (prefers-color-scheme: light) {
@@ -74,10 +80,19 @@
 
     --bg-nav-hover:   rgba(0, 0, 0, 0.05);
     --bg-nav-active:  rgba(0, 0, 0, 0.06);
+
+    /* Upcoming state */
+    --upcoming:      #2563eb;
+    --upcoming-bg:   rgba(37, 99, 235, 0.08);
+    --upcoming-glow: rgba(37, 99, 235, 0.2);
+    --upcoming-text: #2563eb;
   }
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* prevent horizontal scroll on mobile */
+}
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -85,6 +100,7 @@ body {
   color: var(--text);
   min-height: 100dvh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* ─── Layout ────────────────────────────────────────────────────────────────── */
@@ -187,14 +203,16 @@ body {
 
 .sport-tabs {
   display: flex;
-  padding: 0 8px;
+  padding: 0 4px;
+  overflow: hidden; /* prevent tabs from creating horizontal scroll */
 }
 .sport-tab {
   flex: 1;
+  min-width: 0; /* allow shrinking below content size */
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 4px 8px;
+  padding: 10px 2px 8px;
   gap: 3px;
   cursor: pointer;
   border: none;
@@ -203,7 +221,7 @@ body {
   transition: color var(--transition);
 }
 .sport-tab-icon { font-size: 26px; line-height: 1; }
-.sport-tab-name { font-size: 11px; font-weight: 500; color: var(--text-muted); }
+.sport-tab-name { font-size: 11px; font-weight: 500; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .sport-tab.active .sport-tab-name { color: var(--accent); font-weight: 700; }
 .sport-tab.active::before {
   content: '';
@@ -448,15 +466,22 @@ body {
 
 /* ─── Section Label ─────────────────────────────────────────────────────────── */
 .section-label {
+  margin: 24px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--orange);
-  margin: 24px 0 10px;
+}
+
+.section-label-text {
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
 .section-label::after {
@@ -464,6 +489,17 @@ body {
   flex: 1;
   height: 1px;
   background: var(--border);
+  order: 1;
+}
+
+.section-count {
+  order: 2;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-transform: none;
+  letter-spacing: 0;
 }
 
 /* ─── Match Cards ───────────────────────────────────────────────────────────── */
@@ -475,25 +511,21 @@ body {
 
 .match-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 8px;
-}
-@media (min-width: 640px) {
-  .match-grid { grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 960px) {
-  .match-grid { grid-template-columns: repeat(4, 1fr); }
 }
 
 .match-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
+  border-top-width: 2px;
+  border-top-color: transparent;
   border-radius: var(--radius);
   padding: 10px 12px;
   box-shadow: var(--shadow-card);
   cursor: pointer;
   transition: background var(--transition), border-color var(--transition),
-    box-shadow var(--transition), transform var(--transition);
+    box-shadow var(--transition), transform var(--transition), opacity var(--transition);
   position: relative;
   overflow: hidden;
 }
@@ -510,15 +542,25 @@ body {
 .match-card:hover {
   background: var(--bg-card-hover);
   border-color: var(--border-active);
+  border-top-color: inherit;
   transform: translateY(-1px);
   box-shadow: var(--shadow);
 }
 
+.match-card--live { border-top-color: var(--live); }
+.match-card--upcoming { border-top-color: var(--upcoming); }
+.match-card--finished { opacity: 0.72; }
+.match-card--finished:hover { opacity: 1; }
+
 .match-card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 12px;
+}
+
+.match-status-badge-wrap {
+  margin-left: auto;
 }
 
 .match-league-badge {
@@ -573,7 +615,16 @@ body {
   animation: pulse-badge 1.4s ease-in-out infinite;
 }
 
-.status-badge.finished { color: var(--text-muted); }
+.status-badge.finished {
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.status-badge.upcoming {
+  background: var(--upcoming-bg);
+  color: var(--upcoming-text);
+  border: 1px solid var(--upcoming-glow);
+}
 
 .status-badge.scheduled { color: var(--text-secondary); }
 
@@ -598,11 +649,21 @@ body {
 }
 
 .match-team-row .team-name {
+  flex: 1;
+  min-width: 0;
   font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.team-score-dash {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* Score row: score left, status badge right */

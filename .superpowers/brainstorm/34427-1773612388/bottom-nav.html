@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bottom Nav</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #1a1612;
+    color: #f0ebe0;
+    padding: 24px 16px 48px;
+    -webkit-font-smoothing: antialiased;
+  }
+  h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  .subtitle { color: #7a6a5a; font-size: 14px; margin-bottom: 28px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    color: #7a6a5a; text-transform: uppercase;
+    margin-bottom: 12px; margin-top: 28px;
+  }
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-bottom: 32px; }
+  .phone { width: 280px; flex-shrink: 0; }
+  .phone-label { text-align: center; font-size: 12px; color: #7a6a5a; margin-bottom: 10px; font-weight: 600; }
+
+  /* ── LIGHT ── */
+  .phone-light .shell {
+    background: #f5f0e8;
+    border-radius: 32px;
+    border: 6px solid #2a2420;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    min-height: 560px;
+  }
+  .phone-light .ph-header {
+    background: #f5f0e8;
+    padding: 14px 14px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    flex-shrink: 0;
+  }
+  .phone-light .ph-logo { font-weight: 900; font-size: 15px; color: #1a1208; }
+  .phone-light .ph-datepicker {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: #1a1208; font-weight: 600;
+  }
+  .phone-light .ph-datepicker span { color: #9b8060; font-size: 13px; cursor: pointer; }
+  .phone-light .ph-body { padding: 10px 10px 6px; flex: 1; overflow: hidden; }
+  .phone-light .ph-spoiler {
+    margin-bottom: 10px;
+    background: #fffbe6; border: 1px solid #f0c000;
+    border-radius: 10px; padding: 8px 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .phone-light .ph-spoiler-text { font-size: 9px; color: #92660a; font-weight: 600; }
+  .phone-light .ph-spoiler-sub { font-size: 8px; color: #b08030; margin-top: 1px; }
+  .phone-light .ph-toggle { width: 26px; height: 15px; background: #e0d8cc; border-radius: 8px; position: relative; flex-shrink: 0; }
+  .phone-light .ph-toggle::after { content: ''; position: absolute; left: 2px; top: 1.5px; width: 12px; height: 12px; background: #fff; border-radius: 50%; }
+  .phone-light .ph-toggle.on { background: #2563eb; }
+  .phone-light .ph-toggle.on::after { left: auto; right: 2px; }
+
+  .phone-light .section-hd {
+    font-size: 8px; font-weight: 700; letter-spacing: 0.7px; color: #9b8060;
+    text-transform: uppercase; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .live-dot { width: 5px; height: 5px; background: #dc2626; border-radius: 50%; display: inline-block; }
+  .ph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .phone-light .ph-card {
+    background: #fff; border-radius: 9px; padding: 8px 9px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .phone-light .ph-card-league { font-size: 7px; color: #9b8060; margin-bottom: 3px; text-transform: uppercase; }
+  .phone-light .ph-card-teams { font-size: 10px; font-weight: 600; color: #1a1208; line-height: 1.4; margin-bottom: 5px; }
+  .phone-light .score-row { display: flex; justify-content: space-between; align-items: center; }
+  .phone-light .score { font-size: 14px; font-weight: 800; color: #1a1208; }
+  .badge-live { background: #dc2626; color: #fff; font-size: 7px; padding: 2px 4px; border-radius: 3px; font-weight: 700; }
+  .badge-ft { color: #9b8060; font-size: 7px; border: 1px solid #e0d8cc; padding: 2px 4px; border-radius: 3px; }
+
+  /* ── bottom nav ── */
+  .phone-light .ph-bottom {
+    background: #fff;
+    border-top: 1px solid rgba(0,0,0,0.07);
+    padding: 0 0 10px;
+    flex-shrink: 0;
+  }
+  /* League pills row */
+  .phone-light .league-strip {
+    padding: 7px 10px 0;
+    display: flex; gap: 5px; overflow: hidden;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    padding-bottom: 7px;
+  }
+  .phone-light .league-pill {
+    background: #f5f0e8; color: #9b8060;
+    font-size: 8px; padding: 3px 8px;
+    border-radius: 20px; border: 1px solid #e0d8cc;
+    white-space: nowrap; font-weight: 500;
+  }
+  .phone-light .league-pill.active {
+    background: #1a1208; color: #f5f0e8; border-color: #1a1208;
+  }
+  /* Sport tabs */
+  .phone-light .sport-tabs {
+    display: flex; padding: 0 6px;
+  }
+  .phone-light .sport-tab {
+    flex: 1; text-align: center; padding: 8px 4px 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+  }
+  .phone-light .sport-tab-icon { font-size: 18px; line-height: 1; }
+  .phone-light .sport-tab-name { font-size: 8px; color: #9b8060; font-weight: 500; }
+  .phone-light .sport-tab.active .sport-tab-name { color: #1a1208; font-weight: 700; }
+  .phone-light .sport-tab.active .sport-tab-icon { position: relative; }
+  .phone-light .sport-tab.active::before {
+    content: ''; display: block; width: 20px; height: 2px;
+    background: #1a1208; border-radius: 1px;
+    margin: 0 auto 4px;
+  }
+  .phone-light .sport-tab:not(.active)::before { content: ''; display: block; height: 6px; }
+
+  /* ── DARK ── */
+  .phone-dark .shell {
+    background: #0d0a08;
+    border-radius: 32px;
+    border: 6px solid #2a2420;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    display: flex; flex-direction: column; min-height: 560px;
+  }
+  .phone-dark .ph-header {
+    background: #0d0a08; padding: 14px 14px 10px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid rgba(237,201,81,0.1); flex-shrink: 0;
+  }
+  .phone-dark .ph-logo { font-weight: 900; font-size: 15px; color: #edc951; }
+  .phone-dark .ph-datepicker { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #f5f0e8; font-weight: 600; }
+  .phone-dark .ph-datepicker span { color: #6b5040; font-size: 13px; }
+  .phone-dark .ph-body { padding: 10px 10px 6px; flex: 1; overflow: hidden; }
+  .phone-dark .ph-spoiler {
+    margin-bottom: 10px;
+    background: rgba(37,99,235,0.12); border: 1px solid rgba(37,99,235,0.25);
+    border-radius: 10px; padding: 8px 10px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .phone-dark .ph-spoiler-text { font-size: 9px; color: #93bbfd; font-weight: 600; }
+  .phone-dark .ph-spoiler-sub { font-size: 8px; color: #6b5040; margin-top: 1px; }
+  .phone-dark .ph-toggle { width: 26px; height: 15px; background: #2563eb; border-radius: 8px; position: relative; flex-shrink: 0; }
+  .phone-dark .ph-toggle::after { content: ''; position: absolute; right: 2px; top: 1.5px; width: 12px; height: 12px; background: #fff; border-radius: 50%; }
+  .phone-dark .section-hd { font-size: 8px; font-weight: 700; letter-spacing: 0.7px; color: #6b5040; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+  .phone-dark .ph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .phone-dark .ph-card { background: rgba(79,55,45,0.18); border: 1px solid rgba(237,201,81,0.1); border-radius: 9px; padding: 8px 9px; }
+  .phone-dark .ph-card-league { font-size: 7px; color: #6b5040; margin-bottom: 3px; text-transform: uppercase; }
+  .phone-dark .ph-card-teams { font-size: 10px; font-weight: 600; color: #f5f0e8; line-height: 1.4; margin-bottom: 5px; }
+  .phone-dark .score-row { display: flex; justify-content: space-between; align-items: center; }
+  .phone-dark .score { font-size: 14px; font-weight: 800; color: #f5f0e8; }
+  .badge-live-d { background: #cc2a36; color: #fff; font-size: 7px; padding: 2px 4px; border-radius: 3px; font-weight: 700; }
+  .badge-ft-d { color: #6b5040; font-size: 7px; border: 1px solid #3a2a20; padding: 2px 4px; border-radius: 3px; }
+
+  .phone-dark .ph-bottom {
+    background: #110d0a;
+    border-top: 1px solid rgba(237,201,81,0.1);
+    padding: 0 0 10px; flex-shrink: 0;
+  }
+  .phone-dark .league-strip {
+    padding: 7px 10px 7px; display: flex; gap: 5px; overflow: hidden;
+    border-bottom: 1px solid rgba(237,201,81,0.06);
+  }
+  .phone-dark .league-pill {
+    background: rgba(79,55,45,0.2); color: #6b5040;
+    font-size: 8px; padding: 3px 8px; border-radius: 20px;
+    border: 1px solid rgba(237,201,81,0.08); white-space: nowrap; font-weight: 500;
+  }
+  .phone-dark .league-pill.active { background: rgba(237,201,81,0.12); color: #edc951; border-color: rgba(237,201,81,0.3); }
+  .phone-dark .sport-tabs { display: flex; padding: 0 6px; }
+  .phone-dark .sport-tab { flex: 1; text-align: center; padding: 8px 4px 4px; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .phone-dark .sport-tab-icon { font-size: 18px; line-height: 1; }
+  .phone-dark .sport-tab-name { font-size: 8px; color: #6b5040; font-weight: 500; }
+  .phone-dark .sport-tab.active .sport-tab-name { color: #edc951; font-weight: 700; }
+  .phone-dark .sport-tab.active::before { content: ''; display: block; width: 20px; height: 2px; background: #edc951; border-radius: 1px; margin: 0 auto 4px; }
+  .phone-dark .sport-tab:not(.active)::before { content: ''; display: block; height: 6px; }
+</style>
+</head>
+<body>
+
+<h2>Bottom Navigation</h2>
+<p class="subtitle">Sports + leagues anchored to the bottom — always reachable with your thumb, no extra taps</p>
+
+<div class="section-label">Main view</div>
+<div class="phones">
+
+  <div class="phone phone-light">
+    <div class="phone-label">☀️ Light — spoilers on</div>
+    <div class="shell">
+      <div class="ph-header">
+        <div class="ph-logo">⚡ Matchboard</div>
+        <div class="ph-datepicker">
+          <span>‹</span> Mar 15 <span>›</span>
+        </div>
+      </div>
+      <div class="ph-body">
+        <div class="ph-spoiler">
+          <div>
+            <div class="ph-spoiler-text">Spoiler Alert — Scores Showing</div>
+            <div class="ph-spoiler-sub">Tap to hide scores</div>
+          </div>
+          <div class="ph-toggle"></div>
+        </div>
+        <div class="section-hd"><span class="live-dot"></span> Live</div>
+        <div class="ph-grid">
+          <div class="ph-card">
+            <div class="ph-card-league">Premier League</div>
+            <div class="ph-card-teams">Liverpool<br>Tottenham</div>
+            <div class="score-row"><span class="score">1–1</span><span class="badge-live">67'</span></div>
+          </div>
+          <div class="ph-card">
+            <div class="ph-card-league">Bundesliga</div>
+            <div class="ph-card-teams">Stuttgart<br>RB Leipzig</div>
+            <div class="score-row"><span class="score">0–0</span><span class="badge-live">50'</span></div>
+          </div>
+        </div>
+        <div class="section-hd">Results</div>
+        <div class="ph-grid">
+          <div class="ph-card">
+            <div class="ph-card-league">La Liga</div>
+            <div class="ph-card-teams">Barcelona<br>Sevilla</div>
+            <div class="score-row"><span class="score">5–2</span><span class="badge-ft">FT</span></div>
+          </div>
+          <div class="ph-card">
+            <div class="ph-card-league">UCL</div>
+            <div class="ph-card-teams">Man City<br>Real Madrid</div>
+            <div class="score-row"><span class="score">2–1</span><span class="badge-ft">FT</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-bottom">
+        <div class="league-strip">
+          <div class="league-pill active">All</div>
+          <div class="league-pill">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PL</div>
+          <div class="league-pill">🇪🇸 LaLiga</div>
+          <div class="league-pill">🇩🇪 BL</div>
+          <div class="league-pill">⭐ UCL</div>
+        </div>
+        <div class="sport-tabs">
+          <div class="sport-tab active"><span class="sport-tab-icon">⚽</span><span class="sport-tab-name">Football</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🏀</span><span class="sport-tab-name">NBA</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🎾</span><span class="sport-tab-name">Tennis</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🏎</span><span class="sport-tab-name">F1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone phone-dark">
+    <div class="phone-label">🌙 Dark — spoilers off</div>
+    <div class="shell">
+      <div class="ph-header">
+        <div class="ph-logo">⚡ Matchboard</div>
+        <div class="ph-datepicker">
+          <span>‹</span> Mar 15 <span>›</span>
+        </div>
+      </div>
+      <div class="ph-body">
+        <div class="ph-spoiler">
+          <div>
+            <div class="ph-spoiler-text">Spoilers Off — Scores Hidden</div>
+            <div class="ph-spoiler-sub">Tap to show scores</div>
+          </div>
+          <div class="ph-toggle"></div>
+        </div>
+        <div class="section-hd"><span class="live-dot" style="background:#cc2a36;"></span> Live</div>
+        <div class="ph-grid">
+          <div class="ph-card">
+            <div class="ph-card-league">Premier League</div>
+            <div class="ph-card-teams">Liverpool<br>Tottenham</div>
+            <div class="score-row"><span class="score" style="filter:blur(5px)">1–1</span><span class="badge-live-d">67'</span></div>
+          </div>
+          <div class="ph-card">
+            <div class="ph-card-league">Bundesliga</div>
+            <div class="ph-card-teams">Stuttgart<br>RB Leipzig</div>
+            <div class="score-row"><span class="score" style="filter:blur(5px)">0–0</span><span class="badge-live-d">50'</span></div>
+          </div>
+        </div>
+        <div class="section-hd">Results</div>
+        <div class="ph-grid">
+          <div class="ph-card">
+            <div class="ph-card-league">La Liga</div>
+            <div class="ph-card-teams">Barcelona<br>Sevilla</div>
+            <div class="score-row"><span class="score" style="filter:blur(5px)">5–2</span><span class="badge-ft-d">FT</span></div>
+          </div>
+          <div class="ph-card">
+            <div class="ph-card-league">UCL</div>
+            <div class="ph-card-teams">Man City<br>Real Madrid</div>
+            <div class="score-row"><span class="score" style="filter:blur(5px)">2–1</span><span class="badge-ft-d">FT</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="ph-bottom">
+        <div class="league-strip">
+          <div class="league-pill active">All</div>
+          <div class="league-pill">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PL</div>
+          <div class="league-pill">🇪🇸 LaLiga</div>
+          <div class="league-pill">🇩🇪 BL</div>
+          <div class="league-pill">⭐ UCL</div>
+        </div>
+        <div class="sport-tabs">
+          <div class="sport-tab active"><span class="sport-tab-icon">⚽</span><span class="sport-tab-name">Football</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🏀</span><span class="sport-tab-name">NBA</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🎾</span><span class="sport-tab-name">Tennis</span></div>
+          <div class="sport-tab"><span class="sport-tab-icon">🏎</span><span class="sport-tab-name">F1</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

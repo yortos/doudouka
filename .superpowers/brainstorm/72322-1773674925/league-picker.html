@@ -1,0 +1,310 @@
+<h2>How should the league picker appear?</h2>
+<p class="subtitle">When the user taps a sport tab (e.g. Football), how do the league options show up?</p>
+
+<style>
+  .phone-demo {
+    width: 220px;
+    height: 420px;
+    border-radius: 24px;
+    border: 2px solid rgba(255,255,255,0.15);
+    overflow: hidden;
+    background: #0d0a08;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .phone-screen {
+    flex: 1;
+    background: #0d0a08;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .phone-header {
+    padding: 10px 14px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #edc951;
+    border-bottom: 1px solid rgba(237,201,81,0.1);
+    background: #140f0c;
+  }
+  .phone-content {
+    flex: 1;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    align-content: start;
+  }
+  .fake-card {
+    height: 64px;
+    background: rgba(79,55,45,0.2);
+    border-radius: 8px;
+  }
+  .phone-bottom-nav {
+    background: #110d0a;
+    border-top: 1px solid rgba(237,201,81,0.1);
+    padding: 4px 0 8px;
+    display: flex;
+  }
+  .phone-sport-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 6px 4px 4px;
+    gap: 2px;
+  }
+  .phone-sport-tab .icon { font-size: 16px; }
+  .phone-sport-tab .label { font-size: 7px; color: #6b5040; }
+  .phone-sport-tab.active .label { color: #edc951; }
+  .phone-sport-tab.active .indicator {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 2px;
+    background: #edc951;
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* Option A: Bottom sheet */
+  .bottom-sheet {
+    position: absolute;
+    bottom: 52px; left: 0; right: 0;
+    background: #1a1208;
+    border-radius: 14px 14px 0 0;
+    border: 1px solid rgba(237,201,81,0.2);
+    border-bottom: none;
+    padding: 10px;
+    z-index: 10;
+  }
+  .sheet-handle {
+    width: 28px; height: 3px;
+    background: rgba(237,201,81,0.3);
+    border-radius: 2px;
+    margin: 0 auto 8px;
+  }
+  .league-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+  .league-chip {
+    background: rgba(79,55,45,0.2);
+    border-radius: 8px;
+    padding: 5px 4px;
+    font-size: 7px;
+    color: #b09070;
+    text-align: center;
+  }
+  .league-chip.active {
+    background: rgba(237,201,81,0.15);
+    color: #edc951;
+  }
+
+  /* Option B: Popover above nav */
+  .popover-panel {
+    position: absolute;
+    bottom: 52px; left: 4px; right: 4px;
+    background: #1a1208;
+    border-radius: 10px;
+    border: 1px solid rgba(237,201,81,0.2);
+    padding: 8px;
+    z-index: 10;
+  }
+  .popover-league-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  /* Option C: Inline expansion */
+  .phone-bottom-nav-expanded {
+    background: #110d0a;
+    border-top: 1px solid rgba(237,201,81,0.1);
+  }
+  .inline-league-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 6px 6px 4px;
+    border-bottom: 1px solid rgba(237,201,81,0.08);
+  }
+  .inline-league-chip {
+    background: rgba(79,55,45,0.2);
+    border-radius: 6px;
+    padding: 4px 3px;
+    font-size: 7px;
+    color: #b09070;
+    text-align: center;
+  }
+  .inline-league-chip.active {
+    background: rgba(237,201,81,0.15);
+    color: #edc951;
+  }
+  .inline-sport-tabs {
+    display: flex;
+    padding: 2px 0 6px;
+  }
+
+  /* backdrop */
+  .backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 9;
+  }
+
+  .option-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .option-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+</style>
+
+<div class="options" style="margin-top: 16px;">
+
+  <!-- Option A: Bottom Sheet -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Bottom Sheet</h3>
+      <p>Tapping a sport slides up a half-screen sheet with leagues in a grid. Tap outside or the sport tab again to dismiss. Covers part of the content with a dimmed backdrop.</p>
+      <div style="display:flex; justify-content:center; margin-top:12px;">
+        <div class="phone-demo">
+          <div class="phone-screen">
+            <div class="phone-header">⚡ Matchboard</div>
+            <div class="phone-content">
+              <div class="fake-card"></div><div class="fake-card"></div>
+              <div class="fake-card"></div><div class="fake-card"></div>
+            </div>
+            <div class="backdrop" style="bottom: 52px; height: 140px;"></div>
+            <div class="bottom-sheet">
+              <div class="sheet-handle"></div>
+              <div style="font-size:7px;color:#6b5040;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Football — Select league</div>
+              <div class="league-grid">
+                <div class="league-chip active">🌍 All</div>
+                <div class="league-chip">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PL</div>
+                <div class="league-chip">🇪🇸 LaLiga</div>
+                <div class="league-chip">🇩🇪 BL</div>
+                <div class="league-chip">🇫🇷 L1</div>
+                <div class="league-chip">🇮🇹 Serie A</div>
+                <div class="league-chip">⭐ UCL</div>
+                <div class="league-chip">🟠 UEL</div>
+                <div class="league-chip">🟢 UECL</div>
+              </div>
+            </div>
+            <div class="phone-bottom-nav">
+              <div class="phone-sport-tab active" style="position:relative;">
+                <div class="indicator"></div>
+                <span class="icon">⚽</span><span class="label" style="color:#edc951;">Football</span>
+              </div>
+              <div class="phone-sport-tab"><span class="icon">🏀</span><span class="label">NBA</span></div>
+              <div class="phone-sport-tab"><span class="icon">🎾</span><span class="label">Tennis</span></div>
+              <div class="phone-sport-tab"><span class="icon">🏁</span><span class="label">F1</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option B: Floating Popover -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Floating Popover</h3>
+      <p>Tapping a sport opens a compact floating panel just above the nav bar, no backdrop. Leagues in a grid. Tap outside to dismiss. Lightweight, non-blocking.</p>
+      <div style="display:flex; justify-content:center; margin-top:12px;">
+        <div class="phone-demo">
+          <div class="phone-screen">
+            <div class="phone-header">⚡ Matchboard</div>
+            <div class="phone-content">
+              <div class="fake-card"></div><div class="fake-card"></div>
+              <div class="fake-card"></div><div class="fake-card"></div>
+            </div>
+            <div class="popover-panel">
+              <div style="font-size:7px;color:#6b5040;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;">Football</div>
+              <div class="popover-league-grid">
+                <div class="league-chip active">🌍 All</div>
+                <div class="league-chip">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PL</div>
+                <div class="league-chip">🇪🇸 LaLiga</div>
+                <div class="league-chip">🇩🇪 BL</div>
+                <div class="league-chip">🇫🇷 L1</div>
+                <div class="league-chip">🇮🇹 Serie A</div>
+                <div class="league-chip">⭐ UCL</div>
+                <div class="league-chip">🟠 UEL</div>
+                <div class="league-chip">🟢 UECL</div>
+              </div>
+            </div>
+            <div class="phone-bottom-nav">
+              <div class="phone-sport-tab active" style="position:relative;">
+                <div class="indicator"></div>
+                <span class="icon">⚽</span><span class="label" style="color:#edc951;">Football</span>
+              </div>
+              <div class="phone-sport-tab"><span class="icon">🏀</span><span class="label">NBA</span></div>
+              <div class="phone-sport-tab"><span class="icon">🎾</span><span class="label">Tennis</span></div>
+              <div class="phone-sport-tab"><span class="icon">🏁</span><span class="label">F1</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option C: Inline Expansion -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Inline Expansion</h3>
+      <p>Tapping a sport expands the nav bar upward, showing leagues as a grid above the sport tabs — all within the nav bar. No overlay, no backdrop. Tapping again collapses.</p>
+      <div style="display:flex; justify-content:center; margin-top:12px;">
+        <div class="phone-demo">
+          <div class="phone-screen">
+            <div class="phone-header">⚡ Matchboard</div>
+            <div class="phone-content">
+              <div class="fake-card"></div><div class="fake-card"></div>
+              <div class="fake-card"></div><div class="fake-card"></div>
+            </div>
+            <div class="phone-bottom-nav-expanded">
+              <div style="padding: 6px 6px 0; display:flex; align-items:center; justify-content:space-between;">
+                <span style="font-size:7px;color:#6b5040;text-transform:uppercase;letter-spacing:0.5px;">Football</span>
+                <span style="font-size:7px;color:#6b5040;">tap to close ↓</span>
+              </div>
+              <div class="inline-league-row">
+                <div class="inline-league-chip active">🌍 All</div>
+                <div class="inline-league-chip">🏴󠁧󠁢󠁥󠁮󠁧󠁿 PL</div>
+                <div class="inline-league-chip">🇪🇸 LaLiga</div>
+                <div class="inline-league-chip">🇩🇪 BL</div>
+                <div class="inline-league-chip">🇫🇷 L1</div>
+                <div class="inline-league-chip">🇮🇹 Serie A</div>
+                <div class="inline-league-chip">⭐ UCL</div>
+                <div class="inline-league-chip">🟠 UEL</div>
+                <div class="inline-league-chip">🟢 UECL</div>
+              </div>
+              <div class="inline-sport-tabs">
+                <div class="phone-sport-tab active" style="position:relative;flex:1;">
+                  <div class="indicator"></div>
+                  <span class="icon">⚽</span><span class="label" style="color:#edc951;">Football</span>
+                </div>
+                <div class="phone-sport-tab" style="flex:1;"><span class="icon">🏀</span><span class="label">NBA</span></div>
+                <div class="phone-sport-tab" style="flex:1;"><span class="icon">🎾</span><span class="label">Tennis</span></div>
+                <div class="phone-sport-tab" style="flex:1;"><span class="icon">🏁</span><span class="label">F1</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

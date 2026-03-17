@@ -491,7 +491,10 @@ export default function App() {
               <>
                 {live.length > 0 && (
                   <>
-                    <div className="section-label">Live Now</div>
+                    <div className="section-label">
+                      <span className="section-label-text"><span className="live-dot" /> Live Now</span>
+                      <span className="section-count">{live.length} {live.length === 1 ? 'match' : 'matches'}</span>
+                    </div>
                     <div className="match-grid">
                       {live.map(m => (
                         <MatchCard
@@ -508,7 +511,10 @@ export default function App() {
 
                 {upcoming.length > 0 && (
                   <>
-                    <div className="section-label">Upcoming</div>
+                    <div className="section-label">
+                      <span className="section-label-text">Upcoming</span>
+                      <span className="section-count">{upcoming.length} {upcoming.length === 1 ? 'match' : 'matches'}</span>
+                    </div>
                     <div className="match-grid">
                       {upcoming.map(m => (
                         <MatchCard
@@ -525,7 +531,10 @@ export default function App() {
 
                 {finished.length > 0 && (
                   <>
-                    <div className="section-label">Results</div>
+                    <div className="section-label">
+                      <span className="section-label-text">Results</span>
+                      <span className="section-count">{finished.length} {finished.length === 1 ? 'match' : 'matches'}</span>
+                    </div>
                     <div className="match-grid">
                       {finished.map(m => (
                         <MatchCard

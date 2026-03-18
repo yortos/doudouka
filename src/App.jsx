@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Header from './components/Header.jsx'
 import SportTabs from './components/SportTabs.jsx'
 import Sidebar from './components/Sidebar.jsx'
+import LeagueTabs from './components/LeagueTabs.jsx'
 import DateNav from './components/DateNav.jsx'
 import MatchCard from './components/MatchCard.jsx'
 import TennisCard from './components/TennisCard.jsx'
@@ -339,25 +340,35 @@ export default function App() {
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
-    <div className="app">
+    <div className={`app${gridRedesign ? ' app--with-sidebar' : ''}`}>
       <Header action={activeView === 'matches' && sportDef?.hasDateNav
         ? <DateNav date={date} onChange={setDate} />
         : null
       } />
 
-      {/* Sport navigation — Sidebar (desktop) + SportTabs (mobile) */}
-      <Sidebar
-        activeSport={activeSport}
-        onSportChange={handleSportChange}
-        activeLeague={activeLeague}
-        onLeagueChange={handleLeagueChange}
-      />
+      {/* Sport navigation — Sidebar (desktop, redesign only) + SportTabs (mobile) */}
+      {gridRedesign && (
+        <Sidebar
+          activeSport={activeSport}
+          onSportChange={handleSportChange}
+          activeLeague={activeLeague}
+          onLeagueChange={handleLeagueChange}
+        />
+      )}
       <SportTabs
         activeSport={activeSport}
         onSportChange={handleSportChange}
         activeLeague={activeLeague}
         onLeagueChange={handleLeagueChange}
+        leagues={gridRedesign ? undefined : sportDef?.leagues}
       />
+      {!gridRedesign && (
+        <LeagueTabs
+          leagues={sportDef?.leagues}
+          activeLeague={activeLeague}
+          onChange={id => { setActiveLeague(id); setActiveView('matches') }}
+        />
+      )}
 
       {/* No Spoilers card */}
       <div

@@ -169,6 +169,80 @@ body {
   font-weight: 500;
 }
 
+/* ─── Legacy Top Navigation (sport tabs + league tabs) ──────────────────────── */
+.sport-tabs-wrap {
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.sport-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.sport-tabs-wrap .sport-tabs {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 0;
+}
+
+.sport-tabs-wrap .sport-tab {
+  padding: 11px 18px;
+  font-size: 13px;
+  border-bottom: 2px solid transparent;
+}
+
+.sport-tabs-wrap .sport-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--gold);
+}
+
+.sport-tabs-wrap .sport-tab-name { display: inline; }
+
+.league-tabs-wrap {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.league-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.league-tabs {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  gap: 2px;
+}
+
+.league-tabs-cups { border-top: 1px solid var(--border); opacity: 0.9; }
+.league-tabs-european { border-top: 1px solid var(--border); opacity: 0.85; }
+
+.league-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border: none;
+  background: none;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.league-tab:hover { color: var(--text); }
+
+.league-tab.active {
+  color: var(--text);
+  border-bottom-color: var(--league-accent, var(--gold));
+}
+
+.league-tab-flag { font-size: 14px; }
+
 /* ─── Bottom Navigation ─────────────────────────────────────────────────────── */
 .bottom-nav {
   position: fixed;
@@ -509,9 +583,28 @@ body {
   gap: 8px;
 }
 
+/* Legacy card body: home | score | away in a 3-column grid */
+.match-list .match-card .match-body {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.match-list .match-card .match-team {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.match-list .match-card .match-team.away {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
 .match-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 8px;
 }
 
@@ -1976,16 +2069,17 @@ body {
   .sidebar { display: none; }
 }
 
-/* Bottom nav and league sheet hidden on desktop */
+/* Desktop: hide bottom nav + sheet only when sidebar takes over */
 @media (min-width: 960px) {
-  .bottom-nav { display: none; }
-  .league-sheet { display: none; }
+  .app--with-sidebar .bottom-nav { display: none; }
+  .app--with-sidebar .league-sheet { display: none; }
 }
 
-/* Desktop: offset header and main content for sidebar */
+/* Desktop: offset header and main content only when sidebar is rendered */
 @media (min-width: 960px) {
-  .header { padding-left: var(--sidebar-width); }
-  .main-content {
+  .app--with-sidebar .header { padding-left: var(--sidebar-width); }
+  .app--with-sidebar .main-content {
+    width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
     margin-right: 0;
     max-width: none;

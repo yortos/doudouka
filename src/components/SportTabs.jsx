@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SPORTS } from '../sports.js'
 
-export default function SportTabs({ activeSport, onSportChange, activeLeague, onLeagueChange }) {
+export default function SportTabs({ activeSport, onSportChange, activeLeague, onLeagueChange, leagues }) {
   // null | 'leagues' | 'more'
   const [openSheet, setOpenSheet] = useState(null)
 
@@ -37,6 +37,31 @@ export default function SportTabs({ activeSport, onSportChange, activeLeague, on
     onLeagueChange(leagueId)
     setOpenSheet(null)
   }
+
+  // ── Legacy (list) design ──────────────────────────────────────────────────
+
+  if (leagues) {
+    return (
+      <div className="sport-tabs-wrap">
+        <div className="sport-tabs" role="tablist" aria-label="Sport">
+          {SPORTS.map(sport => (
+            <button
+              key={sport.id}
+              role="tab"
+              aria-selected={activeSport === sport.id}
+              className={`sport-tab${activeSport === sport.id ? ' active' : ''}`}
+              onClick={() => onSportChange(sport.id)}
+            >
+              <span className="sport-tab-icon" aria-hidden="true">{sport.icon}</span>
+              <span className="sport-tab-name">{sport.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Redesign (grid) design ────────────────────────────────────────────────
 
   return (
     <>

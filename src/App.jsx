@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { useFeatureGate } from '@statsig/react-bindings'
 import Header from './components/Header.jsx'
 import SportTabs from './components/SportTabs.jsx'
 import Sidebar from './components/Sidebar.jsx'
@@ -92,7 +93,7 @@ export default function App() {
 
   const [selectedMatch, setSelectedMatch] = useState(null)
   const [noSpoilers, setNoSpoilers] = useState(() => localStorage.getItem('noSpoilers') !== '0')
-  const [gridRedesign, setGridRedesign] = useState(false)
+  const { value: gridRedesign } = useFeatureGate('grid-redesign')
 
   const refreshRef = useRef(null)
 
@@ -276,13 +277,6 @@ export default function App() {
     }
   }, [activeView, activeLeague, activeSport]) // eslint-disable-line
 
-  // Fetch feature flags on mount
-  useEffect(() => {
-    fetch('/api/flags')
-      .then(r => r.json())
-      .then(flags => setGridRedesign(flags['grid-redesign'] ?? false))
-      .catch(() => {})
-  }, [])
 
   // Auto-refresh every 60s for today's matches
   useEffect(() => {

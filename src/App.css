@@ -801,6 +801,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  padding-bottom: 2px;
 }
 
 .match-score {
@@ -808,15 +809,22 @@ body {
   align-items: center;
   gap: 6px;
   justify-content: center;
+  position: relative;
 }
 
 .score-reveal-hint {
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 9px;
   color: var(--text-muted);
   opacity: 0.5;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .score-number {
@@ -940,6 +948,7 @@ body {
 
 .modal {
   background: #130e0b;
+  color: #f5f0e8;
   border: 1px solid var(--border-active);
   border-radius: 16px;
   width: 100%;
@@ -1114,8 +1123,8 @@ body {
   font-size: 13px;
 }
 
-.event-home { text-align: left; color: var(--text); }
-.event-away { text-align: right; color: var(--text); }
+.event-home { text-align: left; color: #f5f0e8; }
+.event-away { text-align: right; color: #f5f0e8; }
 .event-home.empty, .event-away.empty { color: transparent; }
 
 .event-player { font-weight: 600; }

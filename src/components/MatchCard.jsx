@@ -144,7 +144,7 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers, gri
               <span className="score-reveal-hint">double tap</span>
             )}
             {match.leg === 2 && match.aggregate && (
-              <span className="agg-score">
+              <span className={`agg-score${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>
                 Agg: {match.aggregate.home}–{match.aggregate.away}
               </span>
             )}
@@ -257,7 +257,7 @@ export default function MatchCard({ match, onClick, onTeamClick, noSpoilers, gri
               <span className="score-reveal-hint">double tap</span>
             )}
             {match.leg === 2 && match.aggregate && (
-              <span className="agg-score">
+              <span className={`agg-score${(noSpoilers && !revealed) ? ' spoiler-blur' : ''}`}>
                 Agg: {match.aggregate.home}–{match.aggregate.away}
               </span>
             )}
